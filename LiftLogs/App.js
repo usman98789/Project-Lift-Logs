@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Ar from "./ar.js";
+import Ar from "./components/ar.js";
 
 export default function App() {
   return (

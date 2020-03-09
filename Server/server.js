@@ -157,7 +157,7 @@ app.post('/signup/', function (req, res, next) {
           if (result) res.status(409).end("username " + username + " already exists");
           else{
             // insert username, password and salt to the database
-            dbo.collection("clients").insertOne({_id: username, password: password, salt: salt}, function (err, res) {
+            dbo.collection("clients").insertOne({_id: username, password: password, salt: salt}, function (err, result) {
                 if (err) return res.status(500).end(err);
                 res.setHeader('Set-Cookie', cookie.serialize('username', username, {
                     path : '/', 

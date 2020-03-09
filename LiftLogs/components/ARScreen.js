@@ -5,8 +5,7 @@ import Ar from "./ar.js";
 const ARScreen = props => {
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text>AR Screen</Text>
-			<Ar/>
+			<Ar />
 		</SafeAreaView>
 	);
 };

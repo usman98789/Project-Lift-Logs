@@ -29,7 +29,7 @@ app.use(function (req, res, next){
 // mongodb creation
 var MongoClient = mongo.MongoClient;
 
-var url = "mongodb://localhost:30000/mydb";
+var url = "mongodb://localhost:27017/mydb";
 
 // create a collection called clients
 MongoClient.connect(url, function(err, db) {

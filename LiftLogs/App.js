@@ -40,7 +40,7 @@ const AppTabNavigator = createMaterialBottomTabNavigator(
 		Routines: {
 			screen: RoutineScreen,
 			navigationOptions: {
-				tabBarLabel: "Routines",
+				tabBarLabel: "Start Workout",
 				tabBarIcon: ({ tintColor }) => (
 					<Icon name="ios-home" color={tintColor} size={24} />
 				),

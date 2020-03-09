@@ -3,16 +3,12 @@ import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 
 const ARScreen = props => {
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView>
 			<Text>AR Screen</Text>
 		</SafeAreaView>
 	);
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	}
-});
+const styles = StyleSheet.create({});
 
 export default ARScreen;

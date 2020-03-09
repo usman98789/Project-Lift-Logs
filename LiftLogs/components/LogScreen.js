@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 
 const LogScreen = props => {
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView>
 			<View style={styles.header}>
 				<Text style={styles.headerTitle}>Workout Logs</Text>
 			</View>

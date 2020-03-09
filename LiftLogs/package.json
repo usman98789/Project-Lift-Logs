@@ -9,15 +9,20 @@
   },
   "dependencies": {
     "expo": "~36.0.0",
+    "expo-gl": "^8.0.0",
     "expo-graphics": "^1.1.0",
     "expo-three": "^5.4.0",
     "expo-three-ar": "0.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
+    "react-native-gesture-handler": "^1.6.0",
+    "react-native-paper": "^3.6.0",
+    "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
-    "three": "^0.114.0",
-    "three.ar.js": "^0.1.8"
+    "react-navigation": "^4.2.2",
+    "react-navigation-material-bottom-tabs": "^2.2.2",
+    "three": "^0.114.0"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.0.0",

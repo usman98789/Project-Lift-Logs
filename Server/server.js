@@ -25,7 +25,6 @@ app.use(function (req, res, next){
 });
 
 
-
 // mongodb creation
 var MongoClient = mongo.MongoClient;
 

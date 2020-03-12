@@ -27,7 +27,7 @@ app.use(function (req, res, next){
 
 // mongodb creation
 var MongoClient = mongo.MongoClient;
-
+let ObjectID = require('mongodb').ObjectID;
 var url = "mongodb://localhost:27017/mydb";
 
 // create a collection called clients
@@ -121,7 +121,8 @@ let Workout = (function(){
 
 // create an exercise
 let Exercise = (function(){
-    return function new_exercise(exercise_name, sets, reps,  weights){
+    return function new_exercise(id, exercise_name, sets, reps,  weights){
+        this._id = id;
         this.exercise_name = exercise_name;
         this.sets = sets;
         this.reps = reps;
@@ -215,10 +216,10 @@ app.post('/users/routines/',  isAuthenticated, function (req, res, next) {
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("routines").insertOne(new Routine(req.body.routine_name, req.session.user), function (err, res) {
+    dbo.collection("routines").insertOne(new Routine(req.body.routine_name, req.session.user), function (err, result) {
         if (err) return res.status(500).end(err);
         db.close();
-        return;
+        return res.json(result);
     })
     })
 });
@@ -228,25 +229,26 @@ app.post('/users/workouts/:id/',  isAuthenticated, function (req, res, next) {
     MongoClient.connect(url, function(err, db) {
         if (err) return res.status(500).end(err);
         var dbo = db.db("mydb");
-        dbo.collection("workouts").insertOne(new Workout(req.body.workout_name, req.params.id), function (err, res) {
+        dbo.collection("workouts").insertOne(new Workout(req.body.workout_name, req.params.id), function (err, result) {
             if (err) return res.status(500).end(err);
             db.close();
-            return;
+            return res.json(result);
         })
         })
 });
 
 // create exercises 
 app.post('/users/exercises/:id/',  isAuthenticated, function (req, res, next) {
+    if (req.params.id.length != 24) return res.json("invalid workout id");
     MongoClient.connect(url, function(err, db) {
-    if (err) return res.status(500).end(err);
-    var dbo = db.db("mydb");
-    dbo.collection("workouts").updateOne(
-        {_id: req.params.id},
-        { $push: { exercises: new Exercise(req.body.exercise_name, req.body.sets, req.body.reps, req.body.weights)} }).done(function (err, updElem) {
-            if (err) return res.status(500).end(err);
-            res.json(updElem);   
-            db.close(); 
+        if (err) return res.status(500).end(err);
+        var dbo = db.db("mydb");
+        dbo.collection("workouts").updateOne(
+            {_id:  ObjectID(req.params.id)},
+            { $push: {exercises: new Exercise(ObjectID().toString(), req.body.exercise_name, req.body.sets, req.body.reps, req.body.weights)} }, function (err, updElem) {
+                if (err) return res.status(500).end(err);
+                db.close(); 
+                return res.json("new exercise pushed\n");   
         });
     })
 });
@@ -258,8 +260,9 @@ app.get('/users/routines/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("routines").find({}, function(err, result) {
+    dbo.collection("routines").find({user: req.session.user}).toArray(function(err, result) {
         if (err) throw err;
+        console.log(result);
         res.json(result);
         db.close();
       })
@@ -271,7 +274,7 @@ app.get('/users/workouts/:id/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("workouts").find({routine_id: req.params.id}, function(err, result) {
+    dbo.collection("workouts").find({routine_id: req.params.id}).toArray(function(err, result) {
         if (err) throw err;
         res.json(result);
         db.close();
@@ -284,7 +287,7 @@ app.get('/users/workouts/:id/:workout_id/', isAuthenticated, function(req, res, 
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("workouts").find({routine_id: req.params.id, _id: req.params.workout_id}, function(err, result) {
+    dbo.collection("workouts").find({routine_id: req.params.id, _id: ObjectID(req.params.workout_id)}).toArray(function(err, result) {
         if (err) throw err;
         res.json(result);
         db.close();
@@ -293,11 +296,11 @@ app.get('/users/workouts/:id/:workout_id/', isAuthenticated, function(req, res, 
 });
 
 // get users log
-app.get('/users/log', isAuthenticated, function(req, res, next){
+app.get('/users/log/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("log").find({user: req.session.user}, null, {sort :{timestamp : -1}}, function(err, result) {
+    dbo.collection("log").find({user: req.session.user}, null, {sort :{timestamp : -1}}).toArray(function(err, result) {
         if (err) throw err;
         res.json(result);
         db.close();
@@ -308,41 +311,58 @@ app.get('/users/log', isAuthenticated, function(req, res, next){
 // deletion
 
 // delete a routine 
-app.delete('/users/routines/:id', isAuthenticated, function(req, res, next){
+app.delete('/users/routines/:id/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
         if (err) return res.status(500).end(err);
         var dbo = db.db("mydb");
-        dbo.collection("routines").deleteOne({_id: req.params.id}, function(err, obj) {
+        dbo.collection("routines").deleteOne({_id: ObjectID(req.params.id)}, function(err, obj) {
             if (err) throw err;
         });
         dbo.collection("workouts").deleteMany({routine_id: req.params.id}, function(err, obj) {
             if (err) throw err;
         });
+        res.json("item deleted\n");
     });
 });
 
 // delete a workout
-app.delete('/users/workouts/:id', isAuthenticated, function(req, res, next){
+app.delete('/users/workouts/:id/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
         if (err) return res.status(500).end(err);
         var dbo = db.db("mydb");
-        dbo.collection("workouts").deleteOne({_id: req.params.id}, function(err, obj) {
+        dbo.collection("workouts").deleteOne({_id: ObjectID(req.params.id)}, function(err, obj) {
             if (err) throw err;
             db.close();
+            res.json(obj);
         });
     });
 });
 
 // delete an exercise
-app.delete('/users/exercise/:id/:exercise_id', isAuthenticated, function(req, res, next){
+app.delete('/users/exercise/:id/:exercise_id/', isAuthenticated, function(req, res, next){
+    if (req.params.id.length != 24) return res.json("invalid workout id");
+    if (req.params.exercise_id.length != 24) return res.json("invalid exercise id");
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("workouts").update({_id: req.params.id}, {$pull: {exercises: {_id: req.params.exercise_id}}}).done(function (err, updElem) {
+    dbo.collection("workouts").updateOne({_id: ObjectID(req.params.id)}, {$pull: {exercises: {_id: req.params.exercise_id}}}, function (err, updElem) {
         if (err) return res.status(500).end(err);
         res.json(updElem);   
         db.close(); 
         });
+    });
+});
+
+
+// delete a workout in the log 
+app.delete('/users/log/:id/', isAuthenticated, function(req, res, next){
+    MongoClient.connect(url, function(err, db) {
+        if (err) return res.status(500).end(err);
+        var dbo = db.db("mydb");
+        dbo.collection("log").deleteOne({_id: ObjectID(req.params.id)}, function(err, obj) {
+            if (err) throw err;
+        });
+        res.json("item deleted\n");
     });
 });
 
@@ -352,10 +372,11 @@ app.delete('/users/exercise/:id/:exercise_id', isAuthenticated, function(req, re
 
 // modify the routine, the only thing we can modify is its name
 app.patch('/users/routine/:id/', isAuthenticated, function(req, res, next){
+    if (req.params.id.length != 24) return res.json("invalid routine id");
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("routines").update({_id: req.params.id}, req.body.updated_routine).done(function (err, updElem) {
+    dbo.collection("routines").updateOne({_id: ObjectID(req.params.id)},{$set: {routine_name: req.body.routine_name}}, function (err, updElem) {
         if (err) return res.status(500).end(err);
         res.json(updElem);   
         db.close(); 
@@ -367,10 +388,12 @@ app.patch('/users/routine/:id/', isAuthenticated, function(req, res, next){
 
 // modify a workout (replace the existing workout) I dont know if we really need to modify an exercise since we can simply bind the whole workout in the req
 app.patch('/users/workout/:id/', isAuthenticated, function(req, res, next){
+    if (req.params.id.length != 24) return res.json("invalid workout id");
+    console.log(req.body.exercises);
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("workouts").update({_id: req.params.id}, req.body.updated_workout).done(function (err, updElem) {
+    dbo.collection("workouts").updateOne({_id: ObjectID(req.params.id)}, {$set: {workout_name: req.body.workout_name, exercises: req.body.exercises}}, function (err, updElem) {
         if (err) return res.status(500).end(err);
         res.json(updElem);   
         db.close(); 
@@ -383,12 +406,15 @@ app.patch('/users/log/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
-    dbo.collection("log").insertOne({workout: req.body.workout, user: req.session.user, timestamp: { type: Date, default: Date.now}}, function (err, res) {
+    dbo.collection("log").insertOne({workout_name: req.body.workout_name, exercises: req.body.exercises, user: req.session.user, timestamp: Date.now()}, function (err, result) {
         if (err) return res.status(500).end(err);
+        res.json("new work out added");
         db.close();
         })
     });
 });
+
+
 
 
 const http = require('http');

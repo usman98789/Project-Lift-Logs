@@ -1,0 +1,69 @@
+POST: /signup/ 
+params: none, body: {username, password}
+curl -i -H "Content-Type: application/json" -d '{"username": "jack", "password": "123"}' -X POST http://localhost:3000/signup -c cookie.txt
+
+POST: /signin/
+params: none, body: {username, password}
+curl -i -H "Content-Type: application/json" -d '{"username": "jack", "password": "123"}' -X POST http://localhost:3000/signin -c cookie.txt  
+
+POST: /signout/
+curl -X POST http://localhost:3000/signout/
+
+POST: /users/routines/ --create a routine
+params: none, body: {routine_name}
+curl -i -H "Content-Type: application/json" -d '{"routine_name": "big man on campus"}' -X POST http://localhost:3000/users/routines/  -b cookie.txt 
+
+POST: /users/workouts/:id/ --create a workout
+params: id(routine id), body £º{workout_name}
+curl -i -H "Content-Type: application/json" -d '{"workout_name": "chest day"}' -X POST http://localhost:3000/users/workouts/5e69841dc742da3504d2687d/  -b cookie.txt
+
+POST: /users/exercises/:id/ -- create an exercise
+params: id(workout id), body: {exercise_name, sets, reps, weights}
+curl -i -H "Content-Type: application/json" -d '{"exercise_name": "bench press", "sets": 10, "reps": 10, "weights": "100lb"}' -X POST http://localhost:3000/users/exercises/5e69860dc742da3504d2687e/  -b cookie.txt
+
+GET: /users/routines/ -- get all routines for current user
+params: none, body: none
+curl --request GET http://localhost:3000/users/routines/ -b cookie.txt
+
+GET: /users/workouts/:id/ -- get all workouts given routine id (in an array)
+params: id, body: none
+curl --request GET http://localhost:3000/users/workouts/5e69841dc742da3504d2687d/ -b cookie.txt
+
+GET: /users/workouts/:id/:workout_id/ -- get a specific workout given workout and routine id(in an single element array)
+params: id, workout_id, body: none
+curl --request GET http://localhost:3000/users/workouts/5e69841dc742da3504d2687d/5e69860dc742da3504d2687e/ -b cookie.txt
+
+GET: /users/log/ -- get logs for current users (in an array)
+params: none, body: none
+curl --request GET http://localhost:3000/users/log/
+
+DELETE: /users/routines/:id/ --delete given routine
+params: id, body: none
+curl --request DELETE http://localhost:3000/users/routines/5e69841dc742da3504d2687d/ -b cookie.txt
+
+DELETE: /users/workouts/:id/ --delete given workout
+params: id, body: none
+curl --request DELETE http://localhost:3000/users/workouts/5e69860dc742da3504d2687e/ -b cookie.txt
+
+DELETE: /users/exercise/:id/:exercise_id/ -- delete given exercise given workout
+params: id, exercise_id, body: none
+curl --request DELETE http://localhost:3000/users/exercise/5e69860dc742da3504d2687e/5e6988657a95a02e500a0bdc/ -b cookie.txt
+
+
+DELETE: /users/log/:id/ -- delete a workout from log
+params: id, body: none
+curl --request DELETE http://localhost:3000/users/log/5e699027e26cba0e5c48417f/ -b cookie.txt
+
+PATCH: /users/routine/:id/ -- modify the name of routine
+params:id, body: {routine_name}
+curl -i -H "Content-Type: application/json" -d '{"routine_name": "big man on campus second version"}' -X PATCH http://localhost:3000/users/routine/5e698da6959eba1a3001433e/  -b cookie.txt
+
+PATCH: /users/workout/:id --modify the name and workout exercises
+params:id, body: {routine_name, exercises(array of exercises)}
+curl -i -H "Content-Type: application/json" -d '{"workout_name": "heavy squat", "exercises":  [ { "_id" : "5e698f31959eba1a30014341", "exercise_name" : "squats", "sets" : 10, "reps" : 15, "weights" : "1000lb" } ]}' -X PATCH http://localhost:3000/users/workout/5e698ed4959eba1a30014340/  -b cookie.txt
+
+PATCH: /users/log/ -- add a workout to the log
+params: none, body: {workout_name, exercises(array of exercises)}
+curl -i -H "Content-Type: application/json" -d '{"workout_name": "heavy squat", "exercises":  [ { "_id" : "5e698f31959eba1a30014341", "exercise_name" : "sssssssquats", "sets" : 10, "reps" : 15, "weights" : "1lb" } ]}' -X PATCH http://localhost:3000/users/log/  -b cookie.txt
+
+

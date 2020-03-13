@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, PixelRatio, Dimensions } from 'react-native';
 import { AR } from "expo";
-import ExpoTHREE, { THREE as eTHREE } from "expo-three"
+import ExpoTHREE, { THREE } from "expo-three"
 import { View as GraphicsView } from 'expo-graphics';
 import { Camera as ARCamera, BackgroundTexture as ARbg } from 'expo-three-ar';
-import { THREE } from 'three';
+import 'three';
+// import { THREE } from 'three';
 
 export default class Ar extends React.Component {
   render() {
@@ -14,103 +15,100 @@ export default class Ar extends React.Component {
         onContextCreate={this.onContextCreate}
         onRender={this.onRender}
         onResize={this.onResize}
-        isArEnabled
-        arTrackingConfiguration={AR.TrackingConfigurations.World}
-        // // Bonus: debug props
-        isArRunningStateEnabled
-        isArCameraStateEnabled
+      // isArEnabled
+      // arTrackingConfiguration={AR.TrackingConfigurations.World}
+      // // Bonus: debug props
+      // isArRunningStateEnabled
+      // isArCameraStateEnabled
       />
     );
   }
 
-  onContextCreate = async ({ gl, scale: PixelRatio, width, height }) => {
-    AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
+  // onContextCreate = async ({ gl, scale: PixelRatio, width, height }) => {
+  onContextCreate = async gl => {
+    const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
+    const scale = PixelRatio.get();
 
-    // not sure what the width and height variables are coming from and why
-    // they are so wrong
-
-    // had to define these constants
-    const screenWidth = Math.round(Dimensions.get('window').width);
-    const screenHeight = Math.round(Dimensions.get('window').height);
-
-    // Create a 3D renderer
-    this.renderer = new ExpoTHREE.Renderer({
+    // renderer
+    this.renderer = new ExpoTHREE.Renderer(
       gl,
-      PixelRatio,
-      screenWidth,
-      screenHeight,
-    });
+    );
+    console.log('hi');
+    this.renderer.capabilities.maxVertexUniforms = 52502;
+    this.renderer.setPixelRatio(scale);
+    this.renderer.setSize(width / scale, height / scale);
+    this.renderer.setClearColor(0x000000, 1.0);
 
-    // We will add all of our meshes to this scene.
-    this.scene = new eTHREE.Scene();
+    /// Standard Camera
+    this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 10000);
+    this.camera.position.set(0, 6, 12);
+    this.camera.lookAt(0, 0, 0);
 
-    this.camera = new ARCamera(screenWidth, screenHeight, 0.01, 1000);
-    // this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
-    this.scene.background = new ARbg(this.renderer);
+    this.setupScene();
+    await this.loadModelsAsync().catch(e => console.log);
 
-    // Define our shape (Below is a tetrahedron, but can be whatever)
-    const geometry = new eTHREE.TetrahedronBufferGeometry(0.1, 0);
-    // Define the material, Below is material with hex color #00ff00
-    const material = new eTHREE.MeshBasicMaterial({ color: 0x00ff00 });
-    // Define the full 3-D object
-    const objectToRender = new eTHREE.Mesh(geometry, material);
+    // AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
 
-    this.scene.add(objectToRender);
-    await this.loadModelsAsync();
+    // // not sure what the width and height variables are coming from and why
+    // // they are so wrong
 
-    // // instantiate a loader
-    // var loader = new THREE.AnimationLoader();
+    // // had to define these constants
+    // const screenWidth = Math.round(Dimensions.get('window').width);
+    // const screenHeight = Math.round(Dimensions.get('window').height);
 
-    // // load a resource
-    // loader.load(
-    //   // resource URL
-    //   '../mike/mike_test_three.js',
-
-    //   // onLoad callback
-    //   function (animations) {
-    //     // animations is an array of AnimationClips
-    //     this.scene(animationns)
-    //   },
-
-    //   // onProgress callback
-    //   function (xhr) {
-    //     console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-    //   },
-
-    //   // onError callback
-    //   function (err) {
-    //     console.log('An error happened');
-    //   }
-    // );
-
-
-
-    // const mesh = await ExpoTHREE.loadObjAsync({ asset: require('../mike/mike_test.obj') });
-    // this.scene.add(mesh);
-
-    // let objLoader = THREE.ObjectLoader();
-    // objLoader.setPath('../mike/');
-    // objLoader.load('mike_test.obj', (object) => {
-    //   this.scene.add(object);
+    // // Create a 3D renderer
+    // this.renderer = new ExpoTHREE.Renderer({
+    //   gl,
+    //   PixelRatio,
+    //   screenWidth,
+    //   screenHeight,
     // });
 
+    // // We will add all of our meshes to this scene.
+    // this.scene = new THREE.Scene();
 
+    // this.camera = new ARCamera(screenWidth, screenHeight, 0.01, 1000);
+    // // this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
+    // this.scene.background = new ARbg(this.renderer);
 
+    // // Define our shape (Below is a tetrahedron, but can be whatever)
+    // const geometry = new THREE.TetrahedronBufferGeometry(0.1, 0);
+    // // Define the material, Below is material with hex color #00ff00
+    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    // // Define the full 3-D object
+    // const objectToRender = new THREE.Mesh(geometry, material);
 
+    // this.scene.add(objectToRender);
+    // await this.loadModelsAsync();
+    // this.scene.add(new THREE.AmbientLight(0xffffff));
+  };
 
-    // const animate = () => {
-    //   requestAnimationFrame(animate);
-    //   objectToRender.rotation.x += 0.01;
-    //   objectToRender.rotation.y += 0.01;
-    //   this.mesh.rotation.y += 0.01;
-    //   this.mesh.rotation.x += 0.01;
-    //   this.renderer.render(this.scene, this.camera);
-    //   gl.endFrameEXP();
-    // };
-    // animate();
+  setupScene = () => {
+    // scene
+    this.scene = new THREE.Scene();
 
-    this.scene.add(new eTHREE.AmbientLight(0xffffff));
-  }
+    // Standard Background
+    this.scene.background = new THREE.Color(0x999999);
+    this.scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+
+    this.scene.add(new THREE.GridHelper(50, 50, 0xffffff, 0x555555));
+
+    this.setupLights();
+  };
+
+  setupLights = () => {
+    // lights
+    const directionalLightA = new THREE.DirectionalLight(0xffffff);
+    directionalLightA.position.set(1, 1, 1);
+    this.scene.add(directionalLightA);
+
+    const directionalLightB = new THREE.DirectionalLight(0xffeedd);
+    directionalLightB.position.set(-1, -1, -1);
+    this.scene.add(directionalLightB);
+
+    const ambientLight = new THREE.AmbientLight(0x222222);
+    this.scene.add(ambientLight);
+  };
 
   // Magic happens here!
   loadModelsAsync = async () => {
@@ -141,7 +139,8 @@ export default class Ar extends React.Component {
     this.mesh = mesh;
   };
 
-  onRender = () => {
+  onRender = (delta) => {
+    this.mesh.rotation.y += 0.4 * delta;
     this.renderer.render(this.scene, this.camera);
   };
 
@@ -156,7 +155,7 @@ export default class Ar extends React.Component {
 
   componentDidMount() {
     // Turn off extra warnings
-    eTHREE.suppressExpoWarnings(true);
+    THREE.suppressExpoWarnings(true);
     // ExpoTHREE.suppressWarnings();
   }
 

@@ -10,10 +10,39 @@ import {
 } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
+import AddExcercise from "./AddExcercise";
 
 const RoutineScreen = props => {
 	const [emptyOpen, setemptyOpen] = useState(false);
 	const [date, setDate] = useState(new Date());
+	const [exArray, setexArray] = useState([]);
+	const [exName, setExName] = useState("");
+	const [setsArray, setsetsArray] = useState([]);
+
+	const addEX = () => {
+		setexArray(exArray => [...exArray, { exName: setsArray }]);
+	};
+
+	const setExcerciseName = x => {
+		setExName(x);
+	};
+
+	const setSets = y => {
+		setsetsArray(y);
+	};
+	console.log(exArray);
+	let EXs = exArray.map((val, key) => {
+		return (
+			<AddExcercise
+				key={key}
+				keyval={key}
+				val={val}
+				exName={setExcerciseName}
+				setsArray={setSets}
+			/>
+		);
+	});
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
@@ -29,7 +58,6 @@ const RoutineScreen = props => {
 			</View>
 			<Modal visible={emptyOpen} animationType="slide">
 				<SafeAreaView>
-					{/* Extract out later as workout component */}
 					<View
 						style={{
 							borderBottomColor: "#F0EFF5",
@@ -53,12 +81,18 @@ const RoutineScreen = props => {
 						</Text>
 					</View>
 					<ScrollView>
-						<Button
-							buttonStyle={{ backgroundColor: "#24a0ed" }}
-							style={styles.exButton}
-							title="Add an Excercise"
-							titleStyle={{ fontWeight: "bold" }}
-						/>
+						<View style={{ flex: 1 }}>
+							<View style={{ marginTop: 30, flexDirection: "column" }}>
+								{EXs}
+							</View>
+							<Button
+								buttonStyle={{ backgroundColor: "#24a0ed" }}
+								style={styles.exButton}
+								title="Add an Excercise"
+								onPress={addEX.bind(this)}
+								titleStyle={{ fontWeight: "bold" }}
+							/>
+						</View>
 					</ScrollView>
 				</SafeAreaView>
 			</Modal>
@@ -69,7 +103,6 @@ const RoutineScreen = props => {
 						<Icon name="ios-add" size={40} style={styles.icon} />
 					</TouchableOpacity>
 				</View>
-				<ScrollView style={styles.test}></ScrollView>
 			</View>
 		</SafeAreaView>
 	);
@@ -137,7 +170,6 @@ const styles = StyleSheet.create({
 		height: 50
 	},
 	exButton: {
-		paddingTop: 60,
 		width: "90%",
 		alignSelf: "center"
 	}

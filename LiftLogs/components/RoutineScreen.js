@@ -24,9 +24,10 @@ const RoutineScreen = props => {
 	const [setCount, setSetsCount] = useState(0);
 	const [exName, setexName] = useState("");
 
+	// for using your physical phone, add your ip address
+	let localIPAddress = "";
+
 	const addEX = () => {
-		console.log("workout name is", workoutName);
-		console.log("exName is", exName);
 		setexArray(exArray => [...exArray, { weight, reps, setCount, exName }]);
 	};
 
@@ -35,7 +36,6 @@ const RoutineScreen = props => {
 	};
 
 	const setWorkoutNamer = x => {
-		console.log("setting", x);
 		setWorkoutName(x);
 	};
 
@@ -51,6 +51,30 @@ const RoutineScreen = props => {
 		setSetsCount(y);
 	};
 
+	function sendLogReqTempWorkout(workoutName, exArray) {
+		console.log("exName is", exName);
+		console.log("weight", weight);
+		console.log("reps", reps);
+		console.log("setCount", setCount);
+		setexArray(exArray => [...exArray, { weight, reps, setCount, exName }]);
+		console.log("EX ARRAY IS", exArray);
+		// setexArray(exArray.shift());
+		if (workoutName !== "" && exArray.length !== 0) {
+			fetch(`http://${localIPAddress}:3000/users/log`, {
+				method: "PATCH",
+				body: JSON.stringify({ workout_name: workoutName, exercises: exArray }),
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json"
+				},
+				credentials: "include"
+			})
+				.then(resJson => resJson.json())
+				.then(res => console.log(res))
+				.catch(e => console.log(e));
+		}
+	}
+
 	let EXs = exArray.map((val, key) => {
 		return (
 			<AddExcercise
@@ -64,8 +88,6 @@ const RoutineScreen = props => {
 			/>
 		);
 	});
-
-	console.log(exArray);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -96,6 +118,10 @@ const RoutineScreen = props => {
 							<Icon name="ios-close" size={55} style={{ color: "#DC4A3A" }} />
 							<Button
 								buttonStyle={{ backgroundColor: "#2dcc70" }}
+								onPress={() => {
+									sendLogReqTempWorkout(workoutName, exArray);
+									setemptyOpen(false);
+								}}
 								style={styles.saveButton}
 								title="Save"
 							/>

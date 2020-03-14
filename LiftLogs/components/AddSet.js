@@ -10,11 +10,19 @@ const AddSet = props => {
 				<Text style={{ color: "#2163f6", left: 100 }}>Reps</Text>
 			</View>
 
-			<View style={styles.above}>
-				<Text>{props.count}</Text>
+			<View style={[styles.above, { marginBottom: 10 }]}>
 				<TextInput
 					selectionColor="blue"
-					style={[styles.input2, styles.weight]}
+					placeholder="0"
+					style={{ position: "absolute", color: "black", fontSize: 17 }}
+					placeholderTextColor="#a9a9a9"
+					onChangeText={props.count}
+					keyboardType="number-pad"
+					maxLength={3}
+				/>
+				<TextInput
+					selectionColor="blue"
+					style={styles.input2}
 					placeholder="0"
 					placeholderTextColor="#a9a9a9"
 					onChangeText={props.weight}
@@ -23,12 +31,13 @@ const AddSet = props => {
 				/>
 				<TextInput
 					selectionColor="blue"
-					style={[styles.input2, styles.reps, styles.weight]}
+					style={[styles.reps]}
 					placeholder="0"
 					placeholderTextColor="#a9a9a9"
 					onChangeText={props.rep}
+					// backgroundColor="red"
 					keyboardType="number-pad"
-					maxLength={4}
+					maxLength={2}
 				/>
 			</View>
 		</View>
@@ -37,14 +46,15 @@ const AddSet = props => {
 
 const styles = StyleSheet.create({
 	input2: {
-		fontSize: 19,
-		right: -75
-	},
-	weight: {
+		right: -72,
+		color: "black",
 		fontSize: 17
 	},
 	reps: {
-		right: -158
+		right: 190,
+		color: "black",
+		fontSize: 17,
+		position: "absolute"
 	},
 	box: {
 		borderColor: "#BFBFBF",
@@ -53,8 +63,9 @@ const styles = StyleSheet.create({
 	above: {
 		flexDirection: "row",
 		flexWrap: "wrap",
-		marginTop: 6,
-		right: -30
+		marginTop: 8,
+		right: -30,
+		flex: 1
 	}
 });
 

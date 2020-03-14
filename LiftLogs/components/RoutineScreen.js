@@ -6,7 +6,8 @@ import {
 	SafeAreaView,
 	ScrollView,
 	TouchableOpacity,
-	Modal
+	Modal,
+	TextInput
 } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -16,32 +17,55 @@ const RoutineScreen = props => {
 	const [emptyOpen, setemptyOpen] = useState(false);
 	const [date, setDate] = useState(new Date());
 	const [exArray, setexArray] = useState([]);
-	const [exName, setExName] = useState("");
-	const [setsArray, setsetsArray] = useState([]);
+	const [workoutName, setWorkoutName] = useState("");
+	// const [setsArray, setsetsArray] = useState([]);
+	const [weight, setWeight] = useState("");
+	const [reps, setReps] = useState("");
+	const [setCount, setSetsCount] = useState(0);
+	const [exName, setexName] = useState("");
 
 	const addEX = () => {
-		setexArray(exArray => [...exArray, { exName: setsArray }]);
+		console.log("workout name is", workoutName);
+		console.log("exName is", exName);
+		setexArray(exArray => [...exArray, { weight, reps, setCount, exName }]);
 	};
 
-	const setExcerciseName = x => {
-		setExName(x);
+	const setExNamer = x => {
+		setexName(x);
 	};
 
-	const setSets = y => {
-		setsetsArray(y);
+	const setWorkoutNamer = x => {
+		console.log("setting", x);
+		setWorkoutName(x);
 	};
-	console.log(exArray);
+
+	const setWeights = y => {
+		setWeight(y);
+	};
+
+	const setREPS = y => {
+		setReps(y);
+	};
+
+	const setCounter = y => {
+		setSetsCount(y);
+	};
+
 	let EXs = exArray.map((val, key) => {
 		return (
 			<AddExcercise
 				key={key}
 				keyval={key}
 				val={val}
-				exName={setExcerciseName}
-				setsArray={setSets}
+				weight={setWeights}
+				reps={setREPS}
+				setCount={setCounter}
+				exName={setExNamer}
 			/>
 		);
 	});
+
+	console.log(exArray);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -76,9 +100,16 @@ const RoutineScreen = props => {
 								title="Save"
 							/>
 						</TouchableOpacity>
-						<Text style={styles.workoutTitle}>
-							{date.toDateString()}'s Workout
-						</Text>
+
+						<TextInput
+							selectionColor="blue"
+							style={styles.workoutTitle}
+							placeholder={date.toDateString() + "'s Workout"}
+							placeholderTextColor="grey"
+							maxLength={30}
+							multiline={false}
+							onChangeText={setWorkoutNamer}
+						/>
 					</View>
 					<ScrollView>
 						<View style={{ flex: 1 }}>
@@ -123,7 +154,6 @@ const styles = StyleSheet.create({
 		fontWeight: "bold"
 	},
 	headerTitle: {
-		color: "black",
 		fontSize: 28,
 		fontWeight: "bold"
 	},

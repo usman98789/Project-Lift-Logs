@@ -3,42 +3,47 @@ import { View, TextInput, StyleSheet, Button } from "react-native";
 import AddSet from "./AddSet";
 
 const AddExcercise = props => {
-	const [setsArray, setSetsArray] = useState([]);
+	// const [setsArray, setSetsArray] = useState([]);
 	const [weight, setWeight] = useState("");
 	const [reps, setReps] = useState("");
 	const [setCount, setSetsCount] = useState(0);
 
-	const setWeights = weight => {
-		setWeight(weight);
+	const setCounter = s => {
+		setSetsCount(s);
+		props.setCount(s);
 	};
 
-	const setRep = reps => {
-		setReps(reps);
+	const setWeights = w => {
+		setWeight(w);
+		props.weight(w);
 	};
 
-	const addSets = () => {
-		setSetsCount(setCount + 1);
-
-		setSetsArray(setsArray => [
-			...setsArray,
-			{ SetCount: setCount, Weight: weight, Reps: reps }
-		]);
-		props.setsArray(setsArray);
-		console.log(setsArray);
+	const setRep = r => {
+		setReps(r);
+		props.reps(r);
 	};
 
-	let sets = setsArray.map((val, key) => {
-		return (
-			<AddSet
-				count={setCount}
-				weight={setWeights}
-				rep={setRep}
-				key={key}
-				keyval={key}
-				val={val}
-			/>
-		);
-	});
+	// const addSets = () => {
+	// setSetsArray(setsArray => [
+	// 	...setsArray,
+	// 	{ SetCount: setCount, Weight: weight, Reps: reps }
+	// ]);
+	// props.setsArray(setsArray);
+	// 	console.log(setsArray);
+	// };
+
+	// let sets = setsArray.map((val, key) => {
+	// 	return (
+	// 		<AddSet
+	// 			count={setCount}
+	// 			weight={setWeights}
+	// 			rep={setRep}
+	// 			key={key}
+	// 			keyval={key}
+	// 			val={val}
+	// 		/>
+	// 	);
+	// });
 	return (
 		<View key={props.keyval} style={styles.panel}>
 			<TextInput
@@ -50,11 +55,13 @@ const AddExcercise = props => {
 				multiline={false}
 				onChangeText={props.exName}
 			/>
-			<AddSet count={setCount} weight={setWeights} rep={setRep} />
-			{sets}
+			<View style={styles.addSet}>
+				<AddSet count={setCounter} weight={setWeights} rep={setRep} />
+			</View>
+			{/* {sets}
 			<View style={styles.addSet}>
 				<Button title="Add Set" color="#2163f6" onPress={addSets}></Button>
-			</View>
+			</View> */}
 		</View>
 	);
 };
@@ -69,7 +76,8 @@ const styles = StyleSheet.create({
 		borderBottomColor: "#BFBFBF",
 		height: 50,
 		fontSize: 19,
-		right: -30
+		right: -30,
+		color: "black"
 	},
 	addSet: {
 		borderColor: "#BFBFBF",

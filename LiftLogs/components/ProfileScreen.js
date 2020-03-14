@@ -21,6 +21,49 @@ const ProfileScreen = props => {
     return newText;
   }
 
+  let localIPAddress = '';
+
+  let signup = (username, password) => {
+    fetch(`http://${localIPAddress}:3000/signup/`, {
+      method: 'POST',
+      body: JSON.stringify({ username: username, password: password }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    })
+      .then(resJson => resJson.json())
+      .then(res => console.log(res))
+      .catch(e => console.log(e))
+  }
+
+  let signin = (username, password) => {
+    fetch(`http://${localIPAddress}:3000/signin/`, {
+      method: 'POST',
+      body: JSON.stringify({ username: username, password: password }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+    })
+      .then(resJson => resJson.json())
+      .then(res => console.log(res))
+      .catch(e => console.log(e))
+  }
+
+  let sendSigninOrSignupReq = (text, username, password) => {
+    switch (text) {
+      case ('signin'):
+        console.log('signin');
+        signin(username, password);
+        break;
+      default:
+        signup(username, password);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -51,20 +94,26 @@ const ProfileScreen = props => {
           isVisible={showOverlay}
         >
           <View style={{ flex: 1, alignItems: "center" }}>
-            <TextInput style={{ padding: 10 }}
+            <TextInput style={styles.inputField}
               placeholder="username"
-              placeholderTextColor="#A0A0A0"//placeholderTextColor="#000" 
+              placeholderTextColor="#A0A0A0"//placeholderTextColor="#000"
+              onChangeText={(text) => setUserNameInput(text)}
             />
-            <TextInput style={{ padding: 10 }}
+            <TextInput style={styles.inputField}
               placeholder="password"
               placeholderTextColor="#A0A0A0"
+              onChangeText={(text) => setPasswordInput(text)}
             />
 
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 5 }}>
               <Button style={{ paddingRight: 5 }}
                 titleStyle={{ fontWeight: "bold" }}
                 buttonStyle={{ backgroundColor: "#24a0ed" }}
-                onPress={() => setShowOverlay(false)}
+                onPress={() => {
+                  console.log(usernameInput);
+                  sendSigninOrSignupReq(signinOrSignup, usernameInput, passwordInput);
+                  setShowOverlay(false);
+                }}
                 title={formatSigninSignUp(signinOrSignup)}
               />
               <Button
@@ -77,6 +126,16 @@ const ProfileScreen = props => {
             </View>
           </View>
         </Overlay>
+        {/* <View style={styles.button}>
+          <Button 
+            titleStyle={{ fontWeight: "bold" }}
+            buttonStyle={{ backgroundColor: "#24a0ed" }}
+            onPress={() => {
+              setShowOverlay(true);
+              setSigninOrSignup("signin")
+            }}
+            title="Sign In"
+          />  */}
       </View>
     </SafeAreaView >
   );
@@ -99,6 +158,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
     padding: 10
+  },
+  inputField: {
+    padding: 10,
+    color: "black"
   }
 });
 

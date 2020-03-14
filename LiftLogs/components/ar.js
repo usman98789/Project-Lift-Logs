@@ -11,7 +11,7 @@ export default class Ar extends React.Component {
   render() {
     return (
       <GraphicsView
-        style={{ flex: 1 }}
+        style={{ flex: 1, width: '100%', height: '100%' }}
         onContextCreate={this.onContextCreate}
         onRender={this.onRender}
         onResize={this.onResize}
@@ -45,7 +45,7 @@ export default class Ar extends React.Component {
     this.camera.lookAt(0, 0, 0);
 
     this.setupScene();
-    await this.loadModelsAsync().catch(e => console.log);
+    await this.loadModelsAsync().catch(e => console.log(e));
 
     // AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
 
@@ -113,19 +113,40 @@ export default class Ar extends React.Component {
   // Magic happens here!
   loadModelsAsync = async () => {
     // Get all the files in the mesh
+    // const model = {
+    //   'thomas.obj': require('./../thomas/thomas.obj'),
+    //   'thomas.mtl': require('./../thomas/thomas.mtl'),
+    //   'thomas.png': require('./../thomas/thomas.png'),
+    // };
+
+    // const model = {
+    //   asset: require('./../thomas/thomas.obj'),
+    //   mtlAsset: require('./../thomas/thomas.mtl')
+    //   // 'thomas.png': require('./../thomas/thomas.png'),
+    // };
+
+    // const model = {
+    //   asset: require('./../thomas/thomas.obj'),
+    //   mtlAsset: require('./../thomas/thomas.mtl')
+    //   // 'thomas.png': require('./../thomas/thomas.png'),
+    // };
+
     const model = {
-      'thomas.obj': require('./../thomas/thomas.obj'),
-      'thomas.mtl': require('./../thomas/thomas.mtl'),
-      'thomas.png': require('./../thomas/thomas.png'),
-    };
+      asset: require('./../mike/mike_test_2.obj'),
+      mtlAsset: require('./../mike/mike_test_2.mtl')
+    }
 
     /// Load model!
-    const mesh = await ExpoTHREE.loadAsync(
-      [model['thomas.obj'], model['thomas.mtl']],
-      null,
-      name => model[name],
-    );
+    // const mesh = await ExpoTHREE.loadAsync(
+    //   [model['thomas.obj'], model['thomas.mtl']],
+    //   null,
+    //   name => model[name],
+    // );
 
+    console.log("hello");
+    // const mesh = await ExpoTHREE.loadAsync({ asset: require('./../thomas/thomas.obj') });
+    const mesh = await ExpoTHREE.loadObjAsync(model);
+    // console.log(mesh);
     /// Update size and position
     ExpoTHREE.utils.scaleLongestSideToSize(mesh, 5);
     ExpoTHREE.utils.alignMesh(mesh, { y: 1 });
@@ -137,6 +158,7 @@ export default class Ar extends React.Component {
 
     /// Save it so we can rotate
     this.mesh = mesh;
+    console.log(`yo ${this.mesh}`);
   };
 
   onRender = (delta) => {
@@ -157,6 +179,10 @@ export default class Ar extends React.Component {
     // Turn off extra warnings
     THREE.suppressExpoWarnings(true);
     // ExpoTHREE.suppressWarnings();
+  }
+
+  UNSAFE_componentWillMount() {
+    THREE.suppressExpoWarnings(true);
   }
 
 }

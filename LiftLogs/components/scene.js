@@ -1,10 +1,12 @@
 import 'prop-types';
 import 'three';
-
+import { AR } from "expo";
 import ExpoGraphics from 'expo-graphics';
 import ExpoTHREE, { THREE } from 'expo-three';
+import { Camera as ARCamera, BackgroundTexture as ARbg } from 'expo-three-ar';
+
 import React from 'react';
-import { PixelRatio } from 'react-native';
+import { PixelRatio, Dimensions } from 'react-native';
 require('../FBXLoader.js');
 
 export default class Scene extends React.Component {
@@ -13,6 +15,8 @@ export default class Scene extends React.Component {
             <ExpoGraphics.View
                 style={{ flex: 1 }}
                 onContextCreate={this.onContextCreate}
+                isArEnabled
+                arTrackingConfiguration={AR.TrackingConfigurations.World}
                 onRender={this.onRender}
                 onResize={this.onResize}
             />
@@ -20,6 +24,13 @@ export default class Scene extends React.Component {
     }
 
     onContextCreate = async ({ gl }) => {
+
+        AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
+
+        // had to define these constants
+        const screenWidth = Math.round(Dimensions.get('window').width);
+        const screenHeight = Math.round(Dimensions.get('window').height);
+
         const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
         const scale = PixelRatio.get();
 
@@ -33,7 +44,8 @@ export default class Scene extends React.Component {
         this.renderer.setClearColor(0x000000, 1.0);
 
         /// Standard Camera
-        this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 10000);
+        // this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 10000);
+        this.camera = new ARCamera(screenWidth, screenHeight, 0.01, 1000);
         this.camera.position.set(0, 6, 12);
         this.camera.lookAt(0, 0, 0);
 
@@ -46,7 +58,9 @@ export default class Scene extends React.Component {
         this.scene = new THREE.Scene();
 
         // Standard Background
-        this.scene.background = new THREE.Color(0x999999);
+        // this.scene.background = new THREE.Color(0x999999);
+
+        this.scene.background = new ARbg(this.renderer);
         this.scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
         this.scene.add(new THREE.GridHelper(50, 50, 0xffffff, 0x555555));

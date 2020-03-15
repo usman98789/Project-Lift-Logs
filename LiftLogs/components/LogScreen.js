@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     position: "relative",
     borderBottomColor: "#F0EFF5",
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
+    marginBottom: 30
   },
   headerTitle: {
     color: "black",
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   workout: {
-    marginTop: 60,
+    marginTop: 15,
     right: -20,
     flexDirection: "column",
     width: "90%",

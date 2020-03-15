@@ -87,6 +87,12 @@ const RoutineScreen = props => {
 			.catch(e => console.log(e));
 	}
 
+	useEffect(() => {
+		if (!emptyOpen) {
+			setexArray([]);
+		}
+	}, [emptyOpen]);
+
 	let EXs = exArray.map((val, key) => {
 		return (
 			<AddExcercise

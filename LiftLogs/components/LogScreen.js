@@ -4,7 +4,7 @@ import {
 	StyleSheet,
 	Text,
 	SafeAreaView,
-	FlatLis,
+	FlatList,
 	TouchableOpacity
 } from "react-native";
 

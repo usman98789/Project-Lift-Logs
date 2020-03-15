@@ -70,6 +70,7 @@ const RoutineScreen = props => {
 
 		// clear exArray for future use
 		setexArray([]);
+		setWorkoutName("");
 
 		fetch(`http://${localIPAddress}:3000/users/log`, {
 			method: "PATCH",
@@ -91,6 +92,7 @@ const RoutineScreen = props => {
 	useEffect(() => {
 		if (!emptyOpen) {
 			setexArray([]);
+			setWorkoutName("");
 		}
 	}, [emptyOpen]);
 

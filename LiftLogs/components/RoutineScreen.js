@@ -155,7 +155,7 @@ const RoutineScreen = props => {
 							onChangeText={setWorkoutNamer}
 						/>
 					</View>
-					<ScrollView>
+					<ScrollView style={{ marginBottom: 150 }}>
 						<View style={{ flex: 1 }}>
 							<View style={{ marginTop: 30, flexDirection: "column" }}>
 								{EXs}
@@ -179,7 +179,7 @@ const RoutineScreen = props => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</SafeAreaView>
+		</SafeAreaView >
 	);
 };
 

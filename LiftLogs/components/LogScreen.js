@@ -4,9 +4,35 @@ import {
   StyleSheet,
   Text,
   SafeAreaView,
-  FlatLis,
+  FlatList,
   TouchableOpacity
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+
+const LogEntry = props => {
+
+  let concatExerciseNames = (exercises) => {
+    let exerciseNames = "";
+    exercises.map((exercise) => {
+      exerciseNames = exerciseNames.concat(', ', exercise.exName);
+    })
+    return exerciseNames;
+  }
+
+  return (
+    <View>
+      <TouchableOpacity activeOpacity={0.5} style={{ zIndex: 1 }}>
+        <View style={styles.workout}>
+          <Text style={{ fontSize: 19 }}>{props.workout.workout_name}</Text>
+          <Text style={{ fontSize: 14 }}>
+            {/* concatenate exercise names */}
+            {concatExerciseNames(props.workout.exercises)}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  )
+}
 
 const LogScreen = props => {
   const [workoutArray, setWorkoutArray] = useState([]);
@@ -14,7 +40,7 @@ const LogScreen = props => {
   const { navigation } = props;
 
   let getWorkouts = () => {
-    fetch("http://localhost:3000/users/log", {
+    fetch("http://192.168.0.163:3000/users/log", {
       method: 'GET',
       headers: {
         "Accept": "application/json",
@@ -30,21 +56,6 @@ const LogScreen = props => {
       .catch(e => console.log(e))
   }
 
-  let concatExerciseNames = (exercises) => {
-    console.log('yeet');
-    let exerciseNames = "";
-    exercises.map((exercise) => {
-      exerciseNames = exerciseNames.concat(', ', exercise.exName);
-    })
-    console.log(exerciseNames);
-    return exerciseNames;
-  }
-
-  // let reRender = true;
-
-  // console.log('outside of use', navigation);
-
-
   useEffect(() => {
     getWorkouts();
     // add event listener to repull workout logs whenever this component is focused
@@ -53,46 +64,39 @@ const LogScreen = props => {
     });
   }, []);
 
-  // workouts is an array of exercise objects
-  let renderWorkoutLog = (workouts) => {
-    return workouts.map((workout, index) => {
+  // // workouts is an array of exercise objects
+  // let renderWorkoutLog = (workouts) => {
+  //   return workouts.map((workout, index) => {
 
-      return (
-        <View key={index}>
-          <TouchableOpacity activeOpacity={0.5} style={{ zIndex: 1 }}>
-            <View style={styles.workout}>
-              <Text style={{ fontSize: 19 }}>{workout.workout_name}</Text>
-              <Text style={{ fontSize: 14 }}>
-                {/* concatenate exercise names */}
-                {concatExerciseNames(workout.exercises)}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )
-    })
-
-  }
+  //     return (
+  //       <View key={index}>
+  //         <TouchableOpacity activeOpacity={0.5} style={{ zIndex: 1 }}>
+  //           <View style={styles.workout}>
+  //             <Text style={{ fontSize: 19 }}>{workout.workout_name}</Text>
+  //             <Text style={{ fontSize: 14 }}>
+  //               {/* concatenate exercise names */}
+  //               {concatExerciseNames(workout.exercises)}
+  //             </Text>
+  //           </View>
+  //         </TouchableOpacity>
+  //       </View>
+  //     )
+  //   })
+  // }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Workout Logs</Text>
       </View>
-      {/* 
-      <TouchableOpacity activeOpacity={0.5} style={{ zIndex: 1 }}>
-        <View style={styles.workout}>
-          <Text style={{ fontSize: 19 }}>Workout Name</Text>
-          <Text style={{ fontSize: 14 }}>
-            Bench Press, Squat, DeadLift, Shoulder Press
-					</Text>
-        </View>
-      </TouchableOpacity> */}
-      <View>
-        {renderWorkoutLog(workoutArray)}
-      </View>
-      {/* <FlatList data={workoutArray} renderItem={({workout}) => (
-			)}/> */}
+      {/* LogEntry */}
+      <FlatList
+        data={workoutArray}
+        renderItem={({ item, index }) => <LogEntry workout={item} />}
+        // relies on item id beinng returned in the db object
+        keyExtractor={(item) => item._id}
+      />
     </SafeAreaView>
   );
 };

@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
 		fontSize: 17
 	},
 	reps: {
-		right: 190,
+		// right: 235,
+		left: 166,
 		color: "black",
 		fontSize: 17,
 		position: "absolute"

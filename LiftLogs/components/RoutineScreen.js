@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	View,
 	StyleSheet,
@@ -52,28 +52,46 @@ const RoutineScreen = props => {
 	};
 
 	function sendLogReqTempWorkout(workoutName, exArray) {
-		console.log("exName is", exName);
-		console.log("weight", weight);
-		console.log("reps", reps);
-		console.log("setCount", setCount);
-		setexArray(exArray => [...exArray, { weight, reps, setCount, exName }]);
-		console.log("EX ARRAY IS", exArray);
-		// setexArray(exArray.shift());
-		if (workoutName !== "" && exArray.length !== 0) {
-			fetch(`http://${localIPAddress}:3000/users/log`, {
-				method: "PATCH",
-				body: JSON.stringify({ workout_name: workoutName, exercises: exArray }),
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json"
-				},
-				credentials: "include"
-			})
-				.then(resJson => resJson.json())
-				.then(res => console.log(res))
-				.catch(e => console.log(e));
+		// check for no workout name entered
+		if (workoutName === "") {
+			tempWorkoutName = date.toDateString() + "'s Workout";
+		} else {
+			tempWorkoutName = workoutName;
 		}
+
+		let temparray = exArray;
+
+		// remove empty object
+		temparray.shift();
+
+		// append the last object to excercise array
+		temparray = [...temparray, { weight, reps, setCount, exName }];
+
+		// clear exArray for future use
+		setexArray([]);
+
+		fetch(`http://${localIPAddress}:3000/users/log`, {
+			method: "PATCH",
+			body: JSON.stringify({
+				workout_name: tempWorkoutName,
+				exercises: temparray
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include"
+		})
+			.then(resJson => resJson.json())
+			.then(res => console.log(res))
+			.catch(e => console.log(e));
 	}
+
+	useEffect(() => {
+		if (!emptyOpen) {
+			setexArray([]);
+		}
+	}, [emptyOpen]);
 
 	let EXs = exArray.map((val, key) => {
 		return (
@@ -137,7 +155,7 @@ const RoutineScreen = props => {
 							onChangeText={setWorkoutNamer}
 						/>
 					</View>
-					<ScrollView>
+					<ScrollView style={{ marginBottom: 150 }}>
 						<View style={{ flex: 1 }}>
 							<View style={{ marginTop: 30, flexDirection: "column" }}>
 								{EXs}
@@ -161,7 +179,7 @@ const RoutineScreen = props => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</SafeAreaView>
+		</SafeAreaView >
 	);
 };
 

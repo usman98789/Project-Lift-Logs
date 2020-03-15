@@ -7,7 +7,8 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	Modal,
-	TextInput
+	TextInput,
+	KeyboardAvoidingView
 } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -155,20 +156,22 @@ const RoutineScreen = props => {
 							onChangeText={setWorkoutNamer}
 						/>
 					</View>
-					<ScrollView style={{ marginBottom: 150 }}>
-						<View style={{ flex: 1 }}>
-							<View style={{ marginTop: 30, flexDirection: "column" }}>
-								{EXs}
+					<KeyboardAvoidingView behavior="padding">
+						<ScrollView style={{ height: "100%" }}>
+							<View style={{ flex: 1 }}>
+								<View style={{ marginTop: 30, flexDirection: "column" }}>
+									{EXs}
+								</View>
+								<Button
+									buttonStyle={{ backgroundColor: "#24a0ed" }}
+									style={styles.exButton}
+									title="Add an Excercise"
+									onPress={addEX.bind(this)}
+									titleStyle={{ fontWeight: "bold" }}
+								/>
 							</View>
-							<Button
-								buttonStyle={{ backgroundColor: "#24a0ed" }}
-								style={styles.exButton}
-								title="Add an Excercise"
-								onPress={addEX.bind(this)}
-								titleStyle={{ fontWeight: "bold" }}
-							/>
-						</View>
-					</ScrollView>
+						</ScrollView>
+					</KeyboardAvoidingView>
 				</SafeAreaView>
 			</Modal>
 			<View style={styles.routines}>
@@ -179,7 +182,7 @@ const RoutineScreen = props => {
 					</TouchableOpacity>
 				</View>
 			</View>
-		</SafeAreaView >
+		</SafeAreaView>
 	);
 };
 
@@ -245,7 +248,8 @@ const styles = StyleSheet.create({
 	},
 	exButton: {
 		width: "90%",
-		alignSelf: "center"
+		alignSelf: "center",
+		paddingBottom: 40
 	}
 });
 

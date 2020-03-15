@@ -101,8 +101,6 @@ const RoutineScreen = props => {
 		);
 	});
 
-	console.log(EXs);
-
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>

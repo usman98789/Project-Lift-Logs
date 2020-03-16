@@ -7,6 +7,7 @@ import {
 	FlatList,
 	TouchableOpacity
 } from "react-native";
+import localIPAddress from "../config.js";
 
 const LogEntry = props => {
 	let concatExerciseNames = exercises => {
@@ -38,8 +39,6 @@ const LogScreen = props => {
 	const [workoutArray, setWorkoutArray] = useState([]);
 
 	const { navigation } = props;
-
-	let localIPAddress = "";
 
 	let getWorkouts = () => {
 		fetch(`http://${localIPAddress}:3000/users/log`, {

@@ -9,7 +9,7 @@ import {
 	KeyboardAvoidingView
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
-
+import localIPAddress from "../config.js";
 const ProfileScreen = props => {
 	const [showOverlay, setShowOverlay] = useState(false);
 	const [usernameInput, setUserNameInput] = useState(null);
@@ -30,7 +30,6 @@ const ProfileScreen = props => {
 	};
 
 	// for using your physical phone, add your ip address
-	let localIPAddress = "";
 
 	let signup = (username, password) => {
 		fetch(`http://${localIPAddress}:3000/signup/`, {
@@ -47,6 +46,7 @@ const ProfileScreen = props => {
 			.catch(e => console.log(e));
 	};
 
+	console.log(localIPAddress);
 	let signin = (username, password) => {
 		fetch(`http://${localIPAddress}:3000/signin/`, {
 			method: "POST",

@@ -1,188 +1,122 @@
-import React from "react";
-import { StyleSheet, Text, View, PixelRatio, Dimensions } from 'react-native';
-import { AR } from "expo";
-import ExpoTHREE, { THREE } from "expo-three"
-import { View as GraphicsView } from 'expo-graphics';
-import { Camera as ARCamera, BackgroundTexture as ARbg } from 'expo-three-ar';
 import 'three';
-// import { THREE } from 'three';
+import { AR } from "expo";
+import ExpoGraphics from 'expo-graphics';
+import ExpoTHREE, { THREE } from 'expo-three';
+import { Camera as ARCamera, BackgroundTexture as ARbg } from 'expo-three-ar';
+import React from 'react';
+import { PixelRatio, Dimensions } from 'react-native';
 
+
+// much of this code adapted from Evan Bacon https://snack.expo.io/@bacon/load-simple-obj-model
 export default class Ar extends React.Component {
-  render() {
-    return (
-      <GraphicsView
-        style={{ flex: 1, width: '100%', height: '100%' }}
-        onContextCreate={this.onContextCreate}
-        onRender={this.onRender}
-        onResize={this.onResize}
-      // isArEnabled
-      // arTrackingConfiguration={AR.TrackingConfigurations.World}
-      // // Bonus: debug props
-      // isArRunningStateEnabled
-      // isArCameraStateEnabled
-      />
-    );
-  }
-
-  // onContextCreate = async ({ gl, scale: PixelRatio, width, height }) => {
-  onContextCreate = async gl => {
-    const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
-    const scale = PixelRatio.get();
-
-    // renderer
-    this.renderer = new ExpoTHREE.Renderer(
-      gl,
-    );
-    console.log('hi');
-    this.renderer.capabilities.maxVertexUniforms = 52502;
-    this.renderer.setPixelRatio(scale);
-    this.renderer.setSize(width / scale, height / scale);
-    this.renderer.setClearColor(0x000000, 1.0);
-
-    /// Standard Camera
-    this.camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 10000);
-    this.camera.position.set(0, 6, 12);
-    this.camera.lookAt(0, 0, 0);
-
-    this.setupScene();
-    await this.loadModelsAsync().catch(e => console.log(e));
-
-    // AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
-
-    // // not sure what the width and height variables are coming from and why
-    // // they are so wrong
-
-    // // had to define these constants
-    // const screenWidth = Math.round(Dimensions.get('window').width);
-    // const screenHeight = Math.round(Dimensions.get('window').height);
-
-    // // Create a 3D renderer
-    // this.renderer = new ExpoTHREE.Renderer({
-    //   gl,
-    //   PixelRatio,
-    //   screenWidth,
-    //   screenHeight,
-    // });
-
-    // // We will add all of our meshes to this scene.
-    // this.scene = new THREE.Scene();
-
-    // this.camera = new ARCamera(screenWidth, screenHeight, 0.01, 1000);
-    // // this.scene.background = new ThreeAR.BackgroundTexture(this.renderer);
-    // this.scene.background = new ARbg(this.renderer);
-
-    // // Define our shape (Below is a tetrahedron, but can be whatever)
-    // const geometry = new THREE.TetrahedronBufferGeometry(0.1, 0);
-    // // Define the material, Below is material with hex color #00ff00
-    // const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    // // Define the full 3-D object
-    // const objectToRender = new THREE.Mesh(geometry, material);
-
-    // this.scene.add(objectToRender);
-    // await this.loadModelsAsync();
-    // this.scene.add(new THREE.AmbientLight(0xffffff));
-  };
-
-  setupScene = () => {
-    // scene
-    this.scene = new THREE.Scene();
-
-    // Standard Background
-    this.scene.background = new THREE.Color(0x999999);
-    this.scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
-
-    this.scene.add(new THREE.GridHelper(50, 50, 0xffffff, 0x555555));
-
-    this.setupLights();
-  };
-
-  setupLights = () => {
-    // lights
-    const directionalLightA = new THREE.DirectionalLight(0xffffff);
-    directionalLightA.position.set(1, 1, 1);
-    this.scene.add(directionalLightA);
-
-    const directionalLightB = new THREE.DirectionalLight(0xffeedd);
-    directionalLightB.position.set(-1, -1, -1);
-    this.scene.add(directionalLightB);
-
-    const ambientLight = new THREE.AmbientLight(0x222222);
-    this.scene.add(ambientLight);
-  };
-
-  // Magic happens here!
-  loadModelsAsync = async () => {
-    // Get all the files in the mesh
-    // const model = {
-    //   'thomas.obj': require('./../thomas/thomas.obj'),
-    //   'thomas.mtl': require('./../thomas/thomas.mtl'),
-    //   'thomas.png': require('./../thomas/thomas.png'),
-    // };
-
-    // const model = {
-    //   asset: require('./../thomas/thomas.obj'),
-    //   mtlAsset: require('./../thomas/thomas.mtl')
-    //   // 'thomas.png': require('./../thomas/thomas.png'),
-    // };
-
-    // const model = {
-    //   asset: require('./../thomas/thomas.obj'),
-    //   mtlAsset: require('./../thomas/thomas.mtl')
-    //   // 'thomas.png': require('./../thomas/thomas.png'),
-    // };
-
-    const model = {
-      asset: require('./../mike/mike_test_2.obj'),
-      mtlAsset: require('./../mike/mike_test_2.mtl')
+    render() {
+        return (
+            <ExpoGraphics.View
+                style={{ flex: 1 }}
+                onContextCreate={this.onContextCreate}
+                isArEnabled
+                arTrackingConfiguration={AR.TrackingConfigurations.World}
+                onRender={this.onRender}
+                onResize={this.onResize}
+            />
+        );
     }
 
-    /// Load model!
-    // const mesh = await ExpoTHREE.loadAsync(
-    //   [model['thomas.obj'], model['thomas.mtl']],
-    //   null,
-    //   name => model[name],
-    // );
+    onContextCreate = async ({ gl }) => {
 
-    console.log("hello");
-    // const mesh = await ExpoTHREE.loadAsync({ asset: require('./../thomas/thomas.obj') });
-    const mesh = await ExpoTHREE.loadObjAsync(model);
-    // console.log(mesh);
-    /// Update size and position
-    ExpoTHREE.utils.scaleLongestSideToSize(mesh, 5);
-    ExpoTHREE.utils.alignMesh(mesh, { y: 1 });
-    /// Smooth mesh
-    // ExpoTHREE.utils.computeMeshNormals(mesh);
+        AR.setPlaneDetection(AR.PlaneDetectionTypes.Horizontal);
 
-    /// Add the mesh to the scene
-    this.scene.add(mesh);
+        // had to define these constants
+        const screenWidth = Math.round(Dimensions.get('window').width);
+        const screenHeight = Math.round(Dimensions.get('window').height);
 
-    /// Save it so we can rotate
-    this.mesh = mesh;
-    console.log(`yo ${this.mesh}`);
-  };
+        const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;
+        const scale = PixelRatio.get();
 
-  onRender = (delta) => {
-    this.mesh.rotation.y += 0.4 * delta;
-    this.renderer.render(this.scene, this.camera);
-  };
+        this.renderer = new ExpoTHREE.Renderer({
+            gl,
+        });
 
-  onResize = ({ width, height }) => {
-    const scale = PixelRatio.get();
+        this.renderer.capabilities.maxVertexUniforms = 52502;
+        this.renderer.setPixelRatio(scale);
+        this.renderer.setSize(width / scale, height / scale);
+        this.renderer.setClearColor(0x000000, 1.0);
 
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setPixelRatio(scale);
-    this.renderer.setSize(width, height);
-  };
+        this.camera = new ARCamera(screenWidth, screenHeight, 0.01, 1000);
+        this.camera.position.set(0, 6, 12);
+        this.camera.lookAt(0, 0, 0);
 
-  componentDidMount() {
-    // Turn off extra warnings
-    THREE.suppressExpoWarnings(true);
-    // ExpoTHREE.suppressWarnings();
-  }
+        this.setupScene();
+        await this.loadModelsAsync();
+    };
 
-  UNSAFE_componentWillMount() {
-    THREE.suppressExpoWarnings(true);
-  }
+    setupScene = () => {
+        // scene
+        this.scene = new THREE.Scene();
 
+        this.scene.background = new ARbg(this.renderer);
+        this.scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+
+        this.scene.add(new THREE.GridHelper(50, 50, 0xffffff, 0x555555));
+
+        this.setupLights();
+    };
+
+    setupLights = () => {
+        // lights
+        const directionalLightA = new THREE.DirectionalLight(0xffffff);
+        directionalLightA.position.set(1, 1, 1);
+        this.scene.add(directionalLightA);
+
+        const directionalLightB = new THREE.DirectionalLight(0xffeedd);
+        directionalLightB.position.set(-1, -1, -1);
+        this.scene.add(directionalLightB);
+
+        const ambientLight = new THREE.AmbientLight(0x222222);
+        this.scene.add(ambientLight);
+    };
+
+    /// Magic happens here!    
+    loadModelsAsync = async () => {
+        const model = {
+            // 'mike_test_no_ss.fbx': require('../mike/mike_test_no_ss.fbx'),
+            'mike_test.obj': require('../mike/mike_test_2.obj'),
+            'mike_test.mtl': require('../mike/mike_test_2.mtl'),
+            // 'mike.png': require('../mike/mike.png'),
+        };
+
+        /// Load model!
+        const mesh = await ExpoTHREE.loadAsync(
+            // [model['mike_test_no_ss.fbx']],//, model['mike_test.mtl']],
+            [model['mike_test.obj'], model['mike_test.mtl']],
+            null,
+            name => model[name],
+        );
+
+        /// Update size and position
+        ExpoTHREE.utils.scaleLongestSideToSize(mesh, 5);
+        ExpoTHREE.utils.alignMesh(mesh, { y: 1 });
+        /// Smooth mesh
+        // ExpoTHREE.utils.computeMeshNormals(mesh);
+
+        /// Add the mesh to the scene
+        this.scene.add(mesh);
+
+        /// Save it so we can rotate
+        this.mesh = mesh;
+    };
+
+    onResize = ({ width, height }) => {
+        const scale = PixelRatio.get();
+
+        this.camera.aspect = width / height;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setPixelRatio(scale);
+        this.renderer.setSize(width, height);
+    };
+
+    onRender = delta => {
+        this.mesh.rotation.y += 0.4 * delta;
+        this.renderer.render(this.scene, this.camera);
+    };
 }

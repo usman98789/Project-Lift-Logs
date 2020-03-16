@@ -1,13 +1,11 @@
 import React from "react";
 import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 import Ar from "./ar.js";
-import Scene from "./scene.js";
 
 const ARScreen = props => {
 	return (
 		<SafeAreaView style={styles.container}>
-			{/* <Ar /> */}
-			<Scene />
+			<Ar />
 		</SafeAreaView>
 	);
 };

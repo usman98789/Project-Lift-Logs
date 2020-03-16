@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
 import { createAppContainer } from "react-navigation";
@@ -40,7 +40,7 @@ const AppTabNavigator = createMaterialBottomTabNavigator(
 		Routines: {
 			screen: RoutineScreen,
 			navigationOptions: {
-				tabBarLabel: "Routines",
+				tabBarLabel: "Start Workout",
 				tabBarIcon: ({ tintColor }) => (
 					<Icon name="ios-home" color={tintColor} size={24} />
 				),
@@ -73,9 +73,7 @@ const AppTabNavigator = createMaterialBottomTabNavigator(
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center"
+		backgroundColor: "#fff"
 	}
 });
 

@@ -46,7 +46,6 @@ const ProfileScreen = props => {
 			.catch(e => console.log(e));
 	};
 
-	console.log(localIPAddress);
 	let signin = (username, password) => {
 		fetch(`http://${localIPAddress}:3000/signin/`, {
 			method: "POST",

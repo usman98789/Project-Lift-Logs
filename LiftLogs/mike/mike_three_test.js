@@ -1,1 +1,0 @@
-{"materials":[{}],"metadata":{"formatVersion":3}}

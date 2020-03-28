@@ -236,7 +236,7 @@ app.post('/users/routines/',  isAuthenticated, function (req, res, next) {
 });
 
 // create workouts
-app.post('/users/workouts/:id/workout',  isAuthenticated, function (req, res, next) {
+app.post('/users/routines/:id/workouts/',  isAuthenticated, function (req, res, next) {
     MongoClient.connect(url, function(err, db) {
         if (err) return res.status(500).end(err);
         var dbo = db.db("mydb");
@@ -249,7 +249,7 @@ app.post('/users/workouts/:id/workout',  isAuthenticated, function (req, res, ne
 });
 
 // create exercises 
-app.post('/users/exercises/:id/',  isAuthenticated, function (req, res, next) {
+app.post('/users/routines/workouts/:id/exercises/',  isAuthenticated, function (req, res, next) {
     if (req.params.id.length != 24) return res.json("invalid workout id");
     MongoClient.connect(url, function(err, db) {
         if (err) return res.status(500).end(err);
@@ -281,7 +281,7 @@ app.get('/users/routines/', isAuthenticated, function(req, res, next){
 });
 
 // get all workouts given a routine
-app.get('/users/workouts/:id/', isAuthenticated, function(req, res, next){
+app.get('/users/routines/:id/workouts/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
@@ -294,7 +294,7 @@ app.get('/users/workouts/:id/', isAuthenticated, function(req, res, next){
 });
 
 // get a specific workout given workout id
-app.get('/users/workouts/:id/:workout_id/', isAuthenticated, function(req, res, next){
+app.get('/users/routines/:id/workouts/:workout_id/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
     var dbo = db.db("mydb");
@@ -337,7 +337,7 @@ app.delete('/users/routines/:id/', isAuthenticated, function(req, res, next){
 });
 
 // delete a workout
-app.delete('/users/workouts/:id/', isAuthenticated, function(req, res, next){
+app.delete('/users/routines/workouts/:id/', isAuthenticated, function(req, res, next){
     MongoClient.connect(url, function(err, db) {
         if (err) return res.status(500).end(err);
         var dbo = db.db("mydb");
@@ -350,7 +350,7 @@ app.delete('/users/workouts/:id/', isAuthenticated, function(req, res, next){
 });
 
 // delete an exercise
-app.delete('/users/exercise/:id/:exercise_id/', isAuthenticated, function(req, res, next){
+app.delete('/users/routines/workouts/:id/exercises/:exercise_id/', isAuthenticated, function(req, res, next){
     if (req.params.id.length != 24) return res.json("invalid workout id");
     if (req.params.exercise_id.length != 24) return res.json("invalid exercise id");
     MongoClient.connect(url, function(err, db) {
@@ -382,7 +382,7 @@ app.delete('/users/log/:id/', isAuthenticated, function(req, res, next){
 // all write function requires a new object in return, we can modify it later, but i dont think there is any efficiency improvement
 
 // modify the routine, the only thing we can modify is its name
-app.patch('/users/routine/:id/', isAuthenticated, function(req, res, next){
+app.patch('/users/routines/:id/', isAuthenticated, function(req, res, next){
     if (req.params.id.length != 24) return res.json("invalid routine id");
     MongoClient.connect(url, function(err, db) {
     if (err) return res.status(500).end(err);
@@ -398,7 +398,7 @@ app.patch('/users/routine/:id/', isAuthenticated, function(req, res, next){
 
 
 // modify a workout (replace the existing workout) I dont know if we really need to modify an exercise since we can simply bind the whole workout in the req
-app.patch('/users/workout/:id/', isAuthenticated, function(req, res, next){
+app.patch('/users/routines/workouts/:id/', isAuthenticated, function(req, res, next){
     if (req.params.id.length != 24) return res.json("invalid workout id");
     console.log(req.body.exercises);
     MongoClient.connect(url, function(err, db) {

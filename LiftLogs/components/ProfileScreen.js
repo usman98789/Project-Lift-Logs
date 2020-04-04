@@ -5,7 +5,8 @@ import {
 	Text,
 	SafeAreaView,
 	TouchableOpacity,
-	TextInput
+	TextInput,
+	KeyboardAvoidingView
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 
@@ -76,87 +77,112 @@ const ProfileScreen = props => {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.headerTitle}>My Profile</Text>
-				<View style={styles.button}>
-					<Button // has padding bottom to avoid collision with sign up
-						titleStyle={{ fontWeight: "bold" }}
-						buttonStyle={{ backgroundColor: "#24a0ed" }}
-						onPress={() => {
-							setShowOverlay(true);
-							setSigninOrSignup("signin");
+			</View>
+
+			<View style={styles.button}>
+				<Button // has padding bottom to avoid collision with sign up
+					titleStyle={{ fontWeight: "bold" }}
+					buttonStyle={{ backgroundColor: "#24a0ed" }}
+					onPress={() => {
+						setShowOverlay(true);
+						setSigninOrSignup("signin");
+					}}
+					title="Sign In"
+				/>
+			</View>
+			<View style={styles.button}>
+				<Button
+					titleStyle={{ fontWeight: "bold" }}
+					buttonStyle={{ backgroundColor: "#24a0ed" }}
+					onPress={() => {
+						setShowOverlay(true);
+						setSigninOrSignup("signup");
+					}}
+					title="Sign Up"
+				/>
+			</View>
+			<Overlay isVisible={showOverlay} width="70%" height="35%">
+				<View style={{ flex: 1, alignItems: "center", paddingTop: 25 }}>
+					<Text
+						style={{
+							fontFamily: "Baskerville-SemiBoldItalic",
+							fontSize: 29,
+							paddingBottom: 10
 						}}
-						title="Sign In"
-					/>
-				</View>
-				<View style={styles.button}>
-					<Button
-						titleStyle={{ fontWeight: "bold" }}
-						buttonStyle={{ backgroundColor: "#24a0ed" }}
-						onPress={() => {
-							setShowOverlay(true);
-							setSigninOrSignup("signup");
+					>
+						Lift Logs
+					</Text>
+					<KeyboardAvoidingView
+						style={{
+							borderBottomWidth: 1,
+							borderTopWidth: 1,
+							borderLeftWidth: 1,
+							borderBottomWidth: 1,
+							borderRightWidth: 1,
+							width: 200
 						}}
-						title="Sign Up"
-					/>
-				</View>
-				<Overlay isVisible={showOverlay}>
-					<View style={{ flex: 1, alignItems: "center" }}>
+						behavior="padding"
+					>
 						<TextInput
+							autoCapitalize={"none"}
 							style={styles.inputField}
-							placeholder="username"
+							placeholder="Username"
 							placeholderTextColor="#A0A0A0" //placeholderTextColor="#000"
 							onChangeText={text => setUserNameInput(text)}
 						/>
+					</KeyboardAvoidingView>
+					<KeyboardAvoidingView
+						style={{
+							borderBottomWidth: 1,
+							borderTopWidth: 1,
+							borderLeftWidth: 1,
+							borderBottomWidth: 1,
+							borderRightWidth: 1,
+							width: 200
+						}}
+						behavior="padding"
+					>
 						<TextInput
+							secureTextEntry={true}
 							style={styles.inputField}
-							placeholder="password"
+							placeholder="Password"
 							placeholderTextColor="#A0A0A0"
 							onChangeText={text => setPasswordInput(text)}
 						/>
-
-						<View
-							style={{
-								flex: 1,
-								flexDirection: "row",
-								justifyContent: "center",
-								paddingTop: 5
+					</KeyboardAvoidingView>
+					<View
+						style={{
+							flex: 1,
+							flexDirection: "row",
+							justifyContent: "center",
+							paddingTop: 30
+						}}
+					>
+						<Button
+							style={{ paddingRight: 5 }}
+							titleStyle={{ fontWeight: "bold" }}
+							buttonStyle={{ backgroundColor: "#24a0ed" }}
+							onPress={() => {
+								console.log(usernameInput);
+								sendSigninOrSignupReq(
+									signinOrSignup,
+									usernameInput,
+									passwordInput
+								);
+								setShowOverlay(false);
 							}}
-						>
-							<Button
-								style={{ paddingRight: 5 }}
-								titleStyle={{ fontWeight: "bold" }}
-								buttonStyle={{ backgroundColor: "#24a0ed" }}
-								onPress={() => {
-									console.log(usernameInput);
-									sendSigninOrSignupReq(
-										signinOrSignup,
-										usernameInput,
-										passwordInput
-									);
-									setShowOverlay(false);
-								}}
-								title={formatSigninSignUp(signinOrSignup)}
-							/>
-							<Button
-								style={{ paddingLeft: 5 }}
-								titleStyle={{ fontWeight: "bold" }}
-								buttonStyle={{ backgroundColor: "#24a0ed" }}
-								onPress={() => setShowOverlay(false)}
-								title="Cancel"
-							/>
-						</View>
+							title={formatSigninSignUp(signinOrSignup)}
+						/>
+						<Button
+							style={{ paddingLeft: 5 }}
+							titleStyle={{ fontWeight: "bold" }}
+							buttonStyle={{ backgroundColor: "#DC4A3A" }}
+							onPress={() => setShowOverlay(false)}
+							title="Cancel"
+						/>
 					</View>
-				</Overlay>
-				{/* <View style={styles.button}>
-          <Button 
-            titleStyle={{ fontWeight: "bold" }}
-            buttonStyle={{ backgroundColor: "#24a0ed" }}
-            onPress={() => {
-              setShowOverlay(true);
-              setSigninOrSignup("signin")
-            }}
-            title="Sign In"
-          />  */}
-			</View>
+				</View>
+			</Overlay>
 		</SafeAreaView>
 	);
 };
@@ -165,7 +191,10 @@ const styles = StyleSheet.create({
 	header: {
 		top: 35,
 		paddingLeft: 20,
-		position: "relative"
+		position: "relative",
+		borderBottomColor: "#F0EFF5",
+		borderBottomWidth: 2,
+		paddingBottom: 20
 	},
 	headerTitle: {
 		color: "black",
@@ -181,7 +210,8 @@ const styles = StyleSheet.create({
 	},
 	inputField: {
 		padding: 10,
-		color: "black"
+		color: "black",
+		fontSize: 21
 	}
 });
 

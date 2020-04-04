@@ -7,7 +7,8 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	Modal,
-	TextInput
+	TextInput,
+	KeyboardAvoidingView
 } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -65,28 +66,48 @@ const RoutineScreen = props => {
 
 
 	function sendLogReqTempWorkout(workoutName, exArray) {
-		console.log("exName is", exName);
-		console.log("weight", weight);
-		console.log("reps", reps);
-		console.log("setCount", setCount);
-		setexArray(exArray => [...exArray, { weight, reps, setCount, exName }]);
-		console.log("EX ARRAY IS", exArray);
-		// setexArray(exArray.shift());
-		if (workoutName !== "" && exArray.length !== 0) {
-			fetch(`http://${localIPAddress}:3000/users/log`, {
-				method: "PATCH",
-				body: JSON.stringify({ workout_name: workoutName, exercises: exArray }),
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json"
-				},
-				credentials: "include"
-			})
-				.then(resJson => resJson.json())
-				.then(res => console.log(res))
-				.catch(e => console.log(e));
+		// check for no workout name entered
+		if (workoutName === "") {
+			tempWorkoutName = date.toDateString() + "'s Workout";
+		} else {
+			tempWorkoutName = workoutName;
 		}
+
+		let temparray = exArray;
+
+		// remove empty object
+		temparray.shift();
+
+		// append the last object to excercise array
+		temparray = [...temparray, { weight, reps, setCount, exName }];
+
+		// clear exArray for future use
+		setexArray([]);
+		setWorkoutName("");
+
+		fetch(`http://${localIPAddress}:3000/users/log`, {
+			method: "PATCH",
+			body: JSON.stringify({
+				workout_name: tempWorkoutName,
+				exercises: temparray
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include"
+		})
+			.then(resJson => resJson.json())
+			.then(res => console.log(res))
+			.catch(e => console.log(e));
 	}
+
+	useEffect(() => {
+		if (!emptyOpen) {
+			setexArray([]);
+			setWorkoutName("");
+		}
+	}, [emptyOpen]);
 
 	let EXs = exArray.map((val, key) => {
 		return (
@@ -150,20 +171,22 @@ const RoutineScreen = props => {
 							onChangeText={setWorkoutNamer}
 						/>
 					</View>
-					<ScrollView>
-						<View style={{ flex: 1 }}>
-							<View style={{ marginTop: 30, flexDirection: "column" }}>
-								{EXs}
+					<KeyboardAvoidingView behavior="padding">
+						<ScrollView style={{ height: "100%" }}>
+							<View style={{ flex: 1 }}>
+								<View style={{ marginTop: 30, flexDirection: "column" }}>
+									{EXs}
+								</View>
+								<Button
+									buttonStyle={{ backgroundColor: "#24a0ed" }}
+									style={styles.exButton}
+									title="Add an Excercise"
+									onPress={addEX.bind(this)}
+									titleStyle={{ fontWeight: "bold" }}
+								/>
 							</View>
-							<Button
-								buttonStyle={{ backgroundColor: "#24a0ed" }}
-								style={styles.exButton}
-								title="Add an Excercise"
-								onPress={addEX.bind(this)}
-								titleStyle={{ fontWeight: "bold" }}
-							/>
-						</View>
-					</ScrollView>
+						</ScrollView>
+					</KeyboardAvoidingView>
 				</SafeAreaView>
 			</Modal>
 			<View style={styles.routines}>
@@ -246,7 +269,8 @@ const styles = StyleSheet.create({
 	},
 	exButton: {
 		width: "90%",
-		alignSelf: "center"
+		alignSelf: "center",
+		paddingBottom: 40
 	}
 });
 

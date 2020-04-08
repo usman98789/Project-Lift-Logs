@@ -5,32 +5,88 @@ import {
 	Text,
 	SafeAreaView,
 	FlatList,
-	TouchableOpacity
+	TouchableOpacity,
+	ScrollView
 } from "react-native";
+import { Button, Overlay } from "react-native-elements";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const LogEntry = props => {
+	const [viewDetails, setViewDetails] = useState(false);
+
 	let concatExerciseNames = exercises => {
 		let exerciseNames = "";
 		exercises.map(exercise => {
 			exerciseNames = exerciseNames.concat(exercise.exName, ", ");
 		});
-		// remove last comma
 		exerciseNames = exerciseNames.slice(0, exerciseNames.length - 2);
 		return exerciseNames;
 	};
 
 	return (
-		<View>
-			<TouchableOpacity activeOpacity={0.5} style={{ zIndex: 1 }}>
+		<SafeAreaView>
+			<TouchableOpacity
+				onPress={() => setViewDetails(true)}
+				activeOpacity={0.5}
+				style={{ zIndex: 1 }}
+			>
 				<View style={styles.workout}>
 					<Text style={{ fontSize: 19 }}>{props.workout.workout_name}</Text>
 					<Text style={{ fontSize: 14 }}>
-						{/* concatenate exercise names */}
 						{concatExerciseNames(props.workout.exercises)}
 					</Text>
 				</View>
 			</TouchableOpacity>
-		</View>
+			<Overlay isVisible={viewDetails} width="85%" height="35%">
+				<ScrollView>
+					<View
+						style={{
+							flex: 1,
+							flexDirection: "row",
+							justifyContent: "space-between"
+						}}
+					>
+						<Text style={{ fontSize: 18, top: 5, fontWeight: "500" }}>
+							{props.workout.workout_name}
+						</Text>
+						<TouchableOpacity
+							activeOpacity={0.5}
+							onPress={() => setViewDetails(false)}
+							style={{
+								paddingRight: 5
+							}}
+						>
+							<Icon
+								name="ios-close"
+								size={40}
+								style={{ top: -5, color: "#DC4A3A" }}
+							/>
+						</TouchableOpacity>
+					</View>
+					{props.workout.exercises.map(excercise => {
+						return (
+							<View key={excercise.exName}>
+								<Text style={{ fontSize: 16, fontWeight: "500" }}>
+									{excercise.exName}
+								</Text>
+								<View
+									style={{
+										flex: 1,
+										flexDirection: "row",
+										justifyContent: "space-between",
+										paddingBottom: 10
+									}}
+								>
+									<Text>Sets: {excercise.setCount}</Text>
+									<Text>Weight: {excercise.weight}</Text>
+									<Text>Reps: {excercise.reps}</Text>
+								</View>
+							</View>
+						);
+					})}
+				</ScrollView>
+			</Overlay>
+		</SafeAreaView>
 	);
 };
 

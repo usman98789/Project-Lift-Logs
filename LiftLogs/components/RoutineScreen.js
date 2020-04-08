@@ -28,11 +28,11 @@ const RoutineScreen = props => {
 	const [exName, setexName] = useState("");
 	const [routines, setRoutine] = useState([]);
 	useEffect(() => {
-		
-		setRoutine([{_id: "1", routine_name: "big man on campus", user: "jack"},
-					{_id: "2", routine_name: "big man on campus 2", user: "jack"}]);
-	  },[]);
-	
+		setRoutine([
+			{ _id: "1", routine_name: "big man on campus", user: "jack" },
+			{ _id: "2", routine_name: "big man on campus 2", user: "jack" }
+		]);
+	}, []);
 
 	// for using your physical phone, add your ip address
 	let localIPAddress = "";
@@ -61,14 +61,10 @@ const RoutineScreen = props => {
 		setSetsCount(y);
 	};
 
-
-
-
-
 	function sendLogReqTempWorkout(workoutName, exArray) {
 		// check for no workout name entered
 		if (workoutName === "") {
-			tempWorkoutName = date.toDateString() + "'s Workout";
+			tempWorkoutName = date.toDateString();
 		} else {
 			tempWorkoutName = workoutName;
 		}
@@ -164,7 +160,7 @@ const RoutineScreen = props => {
 						<TextInput
 							selectionColor="blue"
 							style={styles.workoutTitle}
-							placeholder={date.toDateString() + "'s Workout"}
+							placeholder={date.toDateString()}
 							placeholderTextColor="grey"
 							maxLength={30}
 							multiline={false}
@@ -196,12 +192,18 @@ const RoutineScreen = props => {
 						<Icon name="ios-add" size={40} style={styles.icon} />
 					</TouchableOpacity>
 				</View>
-					
-				<FlatList data = {routines} 
-						
-						renderItem = {({item}) => <Routine _id = {item.id} routine_name = {item.routine_name} user = {item.user} />}
-						extraData = {routines}
+
+				<FlatList
+					data={routines}
+					renderItem={({ item }) => (
+						<Routine
+							_id={item.id}
+							routine_name={item.routine_name}
+							user={item.user}
 						/>
+					)}
+					extraData={routines}
+				/>
 			</View>
 		</SafeAreaView>
 	);

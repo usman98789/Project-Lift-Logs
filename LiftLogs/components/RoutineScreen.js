@@ -13,6 +13,8 @@ import {
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 import AddExcercise from "./AddExcercise";
+import Routine from "./RoutineScreen_components/Routine";
+import { FlatList } from "react-native-gesture-handler";
 
 const RoutineScreen = props => {
 	const [emptyOpen, setemptyOpen] = useState(false);
@@ -24,6 +26,14 @@ const RoutineScreen = props => {
 	const [reps, setReps] = useState("");
 	const [setCount, setSetsCount] = useState(0);
 	const [exName, setexName] = useState("");
+	const [routines, setRoutine] = useState([]);
+
+	useEffect(() => {
+		setRoutine([{_id: "1", routine_name: "big man on campus", user: "jack"},
+					{_id: "2", routine_name: "big man on campus 2", user: "jack"}]);
+	  },[]);
+
+	
 
 	// for using your physical phone, add your ip address
 	let localIPAddress = "";
@@ -183,6 +193,11 @@ const RoutineScreen = props => {
 						<Icon name="ios-add" size={40} style={styles.icon} />
 					</TouchableOpacity>
 				</View>
+				<FlatList data = {routines} 
+						renderItem = {({item}) => <Routine  _id = {item._id} routine_name = {item.routine_name} user = {item.user} />}
+						keyExtractor={(item) => item._id}
+						extraData = {routines}
+						/>
 			</View>
 		</SafeAreaView>
 	);

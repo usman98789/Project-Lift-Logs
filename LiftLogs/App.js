@@ -68,6 +68,7 @@ const AppTabNavigator = createMaterialBottomTabNavigator(
 		initialRouteName: "Routines",
 		order: ["Routines", "Log", "AR", "Profile"]
 	}
+
 );
 
 const styles = StyleSheet.create({

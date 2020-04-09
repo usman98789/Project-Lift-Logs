@@ -28,7 +28,7 @@ app.use(function (req, res, next){
 // mongodb creation
 var MongoClient = mongo.MongoClient;
 let ObjectID = require('mongodb').ObjectID;
-var url = "mongodb://localhost:27017/mydb";
+var url = "mongodb+srv://longjika:qwer3369@cluster0-8pnth.mongodb.net/test?retryWrites=true&w=majority";
 
 // create a collection called clients
 MongoClient.connect(url, function(err, db) {

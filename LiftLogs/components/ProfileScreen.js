@@ -15,6 +15,8 @@ const ProfileScreen = props => {
 	const [usernameInput, setUserNameInput] = useState(null);
 	const [passwordInput, setPasswordInput] = useState(null);
 	const [signinOrSignup, setSigninOrSignup] = useState(null);
+	const [showButtons, setshowButtons] = useState(true);
+	const [signOut, setSignOut] = useState(false);
 
 	let formatSigninSignUp = text => {
 		let newText;
@@ -43,7 +45,29 @@ const ProfileScreen = props => {
 			credentials: "include"
 		})
 			.then(resJson => resJson.json())
-			.then(res => console.log(res))
+			.then(res => {
+				console.log(res);
+				setshowButtons(false);
+				setSignOut(true);
+			})
+			.catch(e => console.log(e));
+	};
+
+	let signout = () => {
+		fetch(`http://${localIPAddress}:3000/signout/`, {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include"
+		})
+			.then(resJson => resJson.json())
+			.then(res => {
+				console.log(res);
+				setshowButtons(true);
+				setSignOut(false);
+			})
 			.catch(e => console.log(e));
 	};
 
@@ -58,7 +82,11 @@ const ProfileScreen = props => {
 			credentials: "include"
 		})
 			.then(resJson => resJson.json())
-			.then(res => console.log(res))
+			.then(res => {
+				console.log(res);
+				setshowButtons(false);
+				setSignOut(true);
+			})
 			.catch(e => console.log(e));
 	};
 
@@ -77,30 +105,46 @@ const ProfileScreen = props => {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.header}>
 				<Text style={styles.headerTitle}>My Profile</Text>
+				{signOut && (
+					<View style={styles.button}>
+						<Button
+							titleStyle={{ fontWeight: "bold" }}
+							buttonStyle={{ backgroundColor: "#24a0ed" }}
+							onPress={() => {
+								signout();
+							}}
+							title="Sign Out"
+						/>
+					</View>
+				)}
 			</View>
+			{showButtons && (
+				<View>
+					<View style={styles.button}>
+						<Button // has padding bottom to avoid collision with sign up
+							titleStyle={{ fontWeight: "bold" }}
+							buttonStyle={{ backgroundColor: "#24a0ed" }}
+							onPress={() => {
+								setShowOverlay(true);
+								setSigninOrSignup("signin");
+							}}
+							title="Sign In"
+						/>
+					</View>
+					<View style={styles.button}>
+						<Button
+							titleStyle={{ fontWeight: "bold" }}
+							buttonStyle={{ backgroundColor: "#24a0ed" }}
+							onPress={() => {
+								setShowOverlay(true);
+								setSigninOrSignup("signup");
+							}}
+							title="Sign Up"
+						/>
+					</View>
+				</View>
+			)}
 
-			<View style={styles.button}>
-				<Button // has padding bottom to avoid collision with sign up
-					titleStyle={{ fontWeight: "bold" }}
-					buttonStyle={{ backgroundColor: "#24a0ed" }}
-					onPress={() => {
-						setShowOverlay(true);
-						setSigninOrSignup("signin");
-					}}
-					title="Sign In"
-				/>
-			</View>
-			<View style={styles.button}>
-				<Button
-					titleStyle={{ fontWeight: "bold" }}
-					buttonStyle={{ backgroundColor: "#24a0ed" }}
-					onPress={() => {
-						setShowOverlay(true);
-						setSigninOrSignup("signup");
-					}}
-					title="Sign Up"
-				/>
-			</View>
 			<Overlay isVisible={showOverlay} width="70%" height="35%">
 				<View style={{ flex: 1, alignItems: "center", paddingTop: 25 }}>
 					<Text

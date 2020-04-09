@@ -2,7 +2,7 @@ import 'three';
 import { AR } from "expo";
 import ExpoGraphics from 'expo-graphics';
 import ExpoTHREE, { THREE } from 'expo-three';
-import { Camera as ARCamera, BackgroundTexture as ARbg } from 'expo-three-ar';
+import { Camera as ARCamera, BackgroundTexture as ARbg, MagneticObject } from 'expo-three-ar';
 import React from 'react';
 import { PixelRatio, Dimensions } from 'react-native';
 
@@ -42,11 +42,16 @@ export default class Ar extends React.Component {
         this.renderer.setSize(width / scale, height / scale);
         this.renderer.setClearColor(0x000000, 1.0);
 
-        this.camera = new ARCamera(screenWidth, screenHeight, 0.01, 1000);
+        this.camera = new ARCamera(screenWidth, screenHeight, 0.001, 10000000);
         this.camera.position.set(0, 6, 12);
         this.camera.lookAt(0, 0, 0);
 
         this.setupScene();
+
+        // Create a sticky node
+        // this.magneticObject = new MagneticObject();
+        // this.scene.add(this.magneticObject);
+
         await this.loadModelsAsync();
     };
 
@@ -57,7 +62,7 @@ export default class Ar extends React.Component {
         this.scene.background = new ARbg(this.renderer);
         this.scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
-        this.scene.add(new THREE.GridHelper(50, 50, 0xffffff, 0x555555));
+        // this.scene.add(new THREE.GridHelper(50, 50, 0xffffff, 0x555555));
 
         this.setupLights();
     };
@@ -80,30 +85,43 @@ export default class Ar extends React.Component {
     loadModelsAsync = async () => {
         const model = {
             // 'mike_test_no_ss.fbx': require('../mike/mike_test_no_ss.fbx'),
-            'mike_test.obj': require('../mike/mike_test_2.obj'),
-            'mike_test.mtl': require('../mike/mike_test_2.mtl'),
+            // 'mike_test.obj': require('../mike/mike_test_2.obj'),
+            // 'mike_test.mtl': require('../mike/mike_test_2.mtl'),
+            'sci_fi5.fbx': require('../mike/sci_fi5.fbx'),
             // 'mike.png': require('../mike/mike.png'),
         };
 
         /// Load model!
-        const mesh = await ExpoTHREE.loadAsync(
+        const obj = await ExpoTHREE.loadAsync(
             // [model['mike_test_no_ss.fbx']],//, model['mike_test.mtl']],
-            [model['mike_test.obj'], model['mike_test.mtl']],
+            // [model['mike_test.obj'], model['mike_test.mtl']],
+            model['sci_fi5.fbx'],
             null,
             name => model[name],
         );
 
-        /// Update size and position
-        ExpoTHREE.utils.scaleLongestSideToSize(mesh, 5);
-        ExpoTHREE.utils.alignMesh(mesh, { y: 1 });
-        /// Smooth mesh
-        // ExpoTHREE.utils.computeMeshNormals(mesh);
+        this.mixer = new THREE.AnimationMixer(obj);
+        this.action = this.mixer.clipAction(obj.animations[0]);
+        this.action.play();
 
-        /// Add the mesh to the scene
-        this.scene.add(mesh);
+        // /// Update size and position
+        ExpoTHREE.utils.scaleLongestSideToSize(obj, 3);
+        // ExpoTHREE.utils.alignMesh(obj, { x: 1, y: 1 });
 
+        // set position of obj so its not huge
+        // obj.position.set(10, 0, 0);
+        obj.matrixWorld.setPosition(new THREE.Vector3(10, 0, 0));
+
+        // /// Smooth mesh
+        // // ExpoTHREE.utils.computeMeshNormals(mesh);
+
+        // Add the mesh to the scene
+        this.scene.add(obj);
+
+        // add this meshobject to the magnetic object which is already added to the scene
+        // this.magneticObject.add(obj);
         /// Save it so we can rotate
-        this.mesh = mesh;
+        // this.mesh = mesh;
     };
 
     onResize = ({ width, height }) => {
@@ -116,7 +134,9 @@ export default class Ar extends React.Component {
     };
 
     onRender = delta => {
-        this.mesh.rotation.y += 0.4 * delta;
+        // this.mesh.rotation.y += 0.4 * delta;
         this.renderer.render(this.scene, this.camera);
+        this.mixer.update(delta);
+
     };
 }

@@ -62,9 +62,7 @@ const ProfileScreen = props => {
 			},
 			credentials: "include"
 		})
-			.then(resJson => resJson.json())
 			.then(res => {
-				console.log(res);
 				setshowButtons(true);
 				setSignOut(false);
 			})

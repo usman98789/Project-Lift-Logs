@@ -108,10 +108,14 @@ const LogScreen = props => {
 		})
 			.then(resJson => resJson.json())
 			.then(res => {
-				console.log(res);
+				console.log({ "res": res == null });
 				setWorkoutArray(res);
 			})
-			.catch(e => console.log(e));
+			.catch(error => {
+				console.log(error);
+				// error
+				setWorkoutArray([]);
+			});
 	};
 
 	useEffect(() => {

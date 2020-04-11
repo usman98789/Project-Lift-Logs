@@ -1,0 +1,112 @@
+newmtl Mike_Freeman_rig:asBlackSG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asBlue2SG
+illum 4
+Kd 0.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asBlueSG
+illum 4
+Kd 0.00 0.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asFaceBlueSG
+illum 4
+Kd 0.00 0.00 1.00
+Ka 0.00 0.00 1.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asFaceBrownSG
+illum 4
+Kd 0.54 0.28 0.20
+Ka 0.54 0.28 0.20
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asFaceCyanSG
+illum 4
+Kd 0.00 0.50 0.50
+Ka 0.00 0.50 0.50
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asFaceGreenSG
+illum 4
+Kd 0.00 0.28 0.10
+Ka 0.00 0.28 0.10
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asGreen2SG
+illum 4
+Kd 1.00 1.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asGreenSG
+illum 4
+Kd 0.00 1.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asRed2SG
+illum 4
+Kd 1.00 0.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asRedSG
+illum 4
+Kd 1.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:asWhiteSG
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl Mike_Freeman_rig:blinn1SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Body-TM_u0_v0.tif
+bump  -bm 1 Body-NM_u0_v0.tif
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl Mike_Freeman_rig:blinn2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Other-TM_u0_v0.tif
+bump  -bm 1 Other-NM_u0_v0.tif
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl Mike_Freeman_rig:blinn2SG1
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Other-TM_u0_v0.tif
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 0.06
+newmtl Mike_Freeman_rig:blinn3SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.00 0.00 0.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+newmtl initialShadingGroup
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00

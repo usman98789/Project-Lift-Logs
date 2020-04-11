@@ -449,19 +449,19 @@ function extractlog(workouts){
     for(i = 0; i < workouts.length; i++){
         for(k = 0; k < workouts[i].exercises.length; k++){
             curr_exercise = workouts[i].exercises[k];
-            if(curr_exercise.exercise_name == "bench" || curr_exercise.exercise_name == "bench press"){
+            if(curr_exercise.exercise_name.trim().toLowerCase() == "bench" || curr_exercise.exercise_name.trim().toLowerCase() == "benchpress"){
                 accum_bench_set = accum_bench_set + curr_exercise.sets;
                 accum_bench_rep = accum_bench_rep + curr_exercise.reps;
                 accum_bench_weight = accum_bench_weight + curr_exercise.weights.match(/\d+/g).map(Number);
                 count_bench++;
             }
-            else if(curr_exercise.exercise_name == "squat" || curr_exercise.exercise_name == "leg press"){
+            else if(curr_exercise.exercise_name.trim().toLowerCase() == "squat" || curr_exercise.exercise_name.trim().toLowerCase() == "legpress"){
                 accum_squat_set = accum_squat_set + curr_exercise.sets;
                 accum_squat_rep = accum_squat_rep + curr_exercise.reps;
                 accum_squat_weight = accum_squat_weight + curr_exercise.weights.match(/\d+/g).map(Number);
                 count_squat++;
             }
-            else if(curr_exercise.exercise_name == "deadlift" || curr_exercise.exercise_name == "dead lift"){
+            else if(curr_exercise.exercise_name.trim().toLowerCase() == "deadlift"){
                 accum_deadlift_set = accum_deadlift_set + curr_exercise.sets;
                 accum_deadlift_rep = accum_deadlift_rep + curr_exercise.reps;
                 accum_deadlift_weight = accum_deadlift_weight + curr_exercise.weights.match(/\d+/g).map(Number);

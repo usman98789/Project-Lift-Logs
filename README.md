@@ -12,15 +12,15 @@
 ### Jikai Long, Usman Siddiqui, Rahmatullah Nikyar
 
 ## Description: <a name="desc"></a>
-Lift Logs is a web application that makes your gym life more organized and manageable. It provides services such as a workout tracker where it allows users to track and change their workout routine. It also includes leaderboards to be able to see other user’s workout progress and add a sense of competitiveness with your peers. In addition to that, Lift Logs can recommend different types of exercises based on user’s profile information while also providing guidelines for the workout using AR technologies. 
+Lift Logs is a mobile application that makes your gym life more organized and manageable. It provides services such as a workout tracker where it allows users to track and change their workout routine. It lets users create and store routines, workouts, and start a workout for today. It also includes charts to be able to see your growth in any of your exercises. In addition to that, Lift Logs can recommend different types of exercises based on user’s profile information while also providing guidelines for the workout using AR technologies. 
 
 ## Key features: <a name="key-feat"></a>
 
-__Routine tracker__ - including daily, weekly and long term plans. This feature tracks user’s performance and displays meaningful analytics on corresponding charts.
+__Routine tracker__ - including daily, weekly and long term plans. This feature tracks user’s performance and displays their routines, workouts and logs every workout they do.
 
-__Leaderboard__ - A leaderboard that displays workout performance from different people where users can know which stage they are currently at and use others as motivation.
+__Charts__ - A leaderboard that displays workout performance from different people where users can know which stage they are currently at and use others as motivation.
 
-__Recommendation__ - This feature recommends users which workout routine works best for them based on their profile information(beginner, expert, weight, height, body-fat percentage, etc) and their current progress(if the user is able to do 100 pounds smith machine bench press, they should move to 50 pounds regular bench press for better result) 
+__Recommendation__ - This feature recommends users which workout routine works best for them based on their profile information of 3 main exercises Bench Press, Squats and Deadlift. It looks at their current progress and suggests which exercises they should do more.
 
 ## Additional features: <a name="add-feat"></a>
 __AR__ - This AR features will project figures on machines and display correct motion of movement for corresponding exercises to help users learn and correct their forms.

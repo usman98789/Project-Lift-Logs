@@ -148,14 +148,23 @@ const ProfileScreen = props => {
 					</View>
 					{signOut && <UserCharts navigation={navigation} />}
 					{signOut && (
-						<View>
+						<View
+							style={{
+								alignSelf: "center",
+								paddingTop: 5,
+								paddingBottom: 30
+							}}
+						>
 							<Button
 								titleStyle={{ fontWeight: "bold" }}
-								buttonStyle={{ backgroundColor: "#24a0ed" }}
+								buttonStyle={{
+									backgroundColor: "#ffbb3d",
+									width: "100%"
+								}}
 								onPress={() => {
 									get_Recommendation();
 								}}
-								title="Get Recommendation"
+								title="Get a Workout Recommendation"
 							/>
 						</View>
 					)}
@@ -269,16 +278,16 @@ const ProfileScreen = props => {
 						</View>
 					</Overlay>
 				</ScrollView>
-				<Modal visible={Recommendationpop} animationType="slide">
+				<Overlay isVisible={Recommendationpop} height={"30%"}>
 					<SafeAreaView>
 						<View>
 							<Text
 								style={{
-									fontSize: 30
+									fontSize: 20
 								}}
 							>
-								Basd on our Machine Learning algorithm, your recommended workout
-								is {Recommendation}
+								Based on our machine learning model, your recommended workout is{" "}
+								{Recommendation}
 							</Text>
 							<View style={styles.button}>
 								<Button
@@ -292,7 +301,7 @@ const ProfileScreen = props => {
 							</View>
 						</View>
 					</SafeAreaView>
-				</Modal>
+				</Overlay>
 			</View>
 		</SafeAreaView>
 	);

@@ -158,14 +158,16 @@ const ProfileScreen = props => {
 						
 					)}
 					{signOut && (
-						<Button 
-							titleStyle={{ fontWeight: "bold" }}
-							buttonStyle={{ backgroundColor: "#24a0ed" }}
-							onPress={() => {
-								get_Recommendation();
-							}}
-							title="Get Recommendation"
-						/>
+						<View>
+							<Button 
+								titleStyle={{ fontWeight: "bold" }}
+								buttonStyle={{ backgroundColor: "#24a0ed" }}
+								onPress={() => {
+									get_Recommendation();
+								}}
+								title="Get Recommendation"
+							/>
+						</View>
 					)}
 
 					{showButtons && (
@@ -279,16 +281,23 @@ const ProfileScreen = props => {
 				</ScrollView>
 				<Modal visible={Recommendationpop} animationType="slide">
 							<SafeAreaView>
-								<View >
-									<Text>{Recommendation}</Text>
-									<Button 
-										titleStyle={{ fontWeight: "bold" }}
-										buttonStyle={{ backgroundColor: "#24a0ed" }}
-											onPress={() => {
-												setRecommendationpop(false)
-											}}
-											title="back"
-									/>
+								<View>
+									<TexT style={{
+									flex: 1,
+									flexDirection: "row",
+									justifyContent: "center",
+									fontSize: 30
+								}}>Basd on our Machine Learning algorithm, your recommended workout is {Recommendation}</Text>
+									<View  style={styles.button}>
+										<Button 
+											titleStyle={{ fontWeight: "bold" }}
+											buttonStyle={{ backgroundColor: "#24a0ed" }}
+												onPress={() => {
+													setRecommendationpop(false)
+												}}
+												title="back"
+										/>
+									</View>
 								</View>
 							</SafeAreaView>
 						</Modal>

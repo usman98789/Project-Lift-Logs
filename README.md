@@ -42,12 +42,15 @@ __AR__ - This AR features will project figures on machines and display correct m
 # Deployment
 
 ## Mobile App
+The Augmented Reality is only supported for iOS and so we recommend using an iOS device as the app is optimized for it.
+
 To deploy mobile app, `cd LiftLogs` and use the command `expo start`. A browser window should open up.
 
 From there ensure you have the Expo App downloaded on your mobile phone.
 
 On the browser window thats opened, either use the url provied on your mobile phone's web browser or scan the QR code to be redirected into the expo app where the LiftLogs app mobile is contained.
 
+(According to Piazza post this was sufficient as it costs $99USD to either put on the Store or use Apples Test Flight)
 ## Backend Server
 
 ### One time set-up

@@ -61,3 +61,6 @@ On the browser window thats opened, either use the url provied on your mobile ph
 ### Deploy/Re-deploy command
 In the root project directory run `$ git subtree push --prefix Server heroku master`
 To see live errors in the deployment, or console.log output, run `heroku logs --tail`
+
+### API Documentation
+Here is the link to API Documentation: https://github.com/UTSCC09/project-lift-logs/blob/master/API_Doc.md

@@ -16,6 +16,12 @@ export default class Ar extends React.Component {
 		super(props);
 	}
 
+	UNSAFE_componentWillMount() {
+		THREE.suppressExpoWarnings(true);
+		ExpoTHREE.THREE.suppressExpoWarnings(true);
+		console.disableYellowBox = true;
+	}
+
 	render() {
 		return (
 			<ExpoGraphics.View

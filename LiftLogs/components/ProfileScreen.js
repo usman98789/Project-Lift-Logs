@@ -282,7 +282,7 @@ const ProfileScreen = props => {
 				<Modal visible={Recommendationpop} animationType="slide">
 							<SafeAreaView>
 								<View>
-									<TexT style={{
+									<Text style={{
 									flex: 1,
 									flexDirection: "row",
 									justifyContent: "center",

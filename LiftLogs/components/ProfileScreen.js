@@ -22,6 +22,8 @@ const ProfileScreen = props => {
 	const [showButtons, setshowButtons] = useState(true);
 	const [signOut, setSignOut] = useState(false);
 
+	const { navigation } = props;
+
 	let formatSigninSignUp = text => {
 		let newText;
 
@@ -50,7 +52,6 @@ const ProfileScreen = props => {
 		})
 			.then(resJson => resJson.json())
 			.then(res => {
-				console.log(res);
 				setshowButtons(false);
 				setSignOut(true);
 			})
@@ -85,7 +86,6 @@ const ProfileScreen = props => {
 		})
 			.then(resJson => resJson.json())
 			.then(res => {
-				console.log(res);
 				setshowButtons(false);
 				setSignOut(true);
 			})
@@ -122,7 +122,11 @@ const ProfileScreen = props => {
 							</View>
 						)}
 					</View>
-					{signOut && (<UserCharts />)}
+					{signOut && (
+						<UserCharts
+							navigation={navigation}
+						/>
+					)}
 
 					{showButtons && (
 						<View>
@@ -213,7 +217,6 @@ const ProfileScreen = props => {
 									titleStyle={{ fontWeight: "bold" }}
 									buttonStyle={{ backgroundColor: "#24a0ed" }}
 									onPress={() => {
-										console.log(usernameInput);
 										sendSigninOrSignupReq(
 											signinOrSignup,
 											usernameInput,

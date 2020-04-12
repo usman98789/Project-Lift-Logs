@@ -8,6 +8,8 @@ const UserCharts = props => {
   const [selectedEx, setSelectedEx] = useState(null);
   const [selectedExWeight, setSelectedExWeight] = useState([]);
 
+  const { navigation } = props;
+
   const getExercises = async () => {
     // for using your physical phone, add your ip address
     let localIPAddress = "";
@@ -24,7 +26,7 @@ const UserCharts = props => {
         let exerciseList = [];
         logs.map(workout => {
           workout.exercises.map(exercise => {
-            exerciseList.push(exercise.exName);
+            exerciseList.push(exercise.exercise_name);
           });
         })
         let temp = [... new Set(exerciseList)];
@@ -40,7 +42,7 @@ const UserCharts = props => {
 
   const getExerciseWeightData = () => {
     let name = selectedEx;
-    let localIPAddress = "192.168.0.163";
+    let localIPAddress = "";
     fetch(`http://${localIPAddress}:3000/users/log`, {
       method: "GET",
       headers: {
@@ -55,8 +57,8 @@ const UserCharts = props => {
         logs.map(workout => {
           // if exercise does not have same name, null is put in place of weight
           workout.exercises.map(exercise => {
-            if (exercise.exName === name) {
-              weightValues.push(exercise.weight)
+            if (exercise.exercise_name === name) {
+              weightValues.push(exercise.weights)
             }
           });
         });
@@ -107,6 +109,9 @@ const UserCharts = props => {
 
   useEffect(() => {
     getExercises();
+    const unsubscribe = navigation.addListener("willFocus", e => {
+      getExercises();
+    });
   }, []);
 
   return (

@@ -17,7 +17,7 @@ const LogEntry = props => {
 	let concatExerciseNames = exercises => {
 		let exerciseNames = "";
 		exercises.map(exercise => {
-			exerciseNames = exerciseNames.concat(exercise.exName, ", ");
+			exerciseNames = exerciseNames.concat(exercise.exercise_name, ", ");
 		});
 		exerciseNames = exerciseNames.slice(0, exerciseNames.length - 2);
 		return exerciseNames;
@@ -65,9 +65,9 @@ const LogEntry = props => {
 					</View>
 					{props.workout.exercises.map(excercise => {
 						return (
-							<View key={excercise.exName}>
+							<View key={excercise.exercise_name}>
 								<Text style={{ fontSize: 16, fontWeight: "500" }}>
-									{excercise.exName}
+									{excercise.exercise_name}
 								</Text>
 								<View
 									style={{
@@ -77,8 +77,8 @@ const LogEntry = props => {
 										paddingBottom: 10
 									}}
 								>
-									<Text>Sets: {excercise.setCount}</Text>
-									<Text>Weight: {excercise.weight}</Text>
+									<Text>Sets: {excercise.sets}</Text>
+									<Text>Weight: {excercise.weights}</Text>
 									<Text>Reps: {excercise.reps}</Text>
 								</View>
 							</View>
@@ -95,7 +95,7 @@ const LogScreen = props => {
 
 	const { navigation } = props;
 
-	let localIPAddress = "192.168.0.163";
+	let localIPAddress = "";
 
 	let getWorkouts = () => {
 		fetch(`http://${localIPAddress}:3000/users/log`, {

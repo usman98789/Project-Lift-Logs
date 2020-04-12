@@ -39,4 +39,22 @@ __AR__ - This AR features will project figures on machines and display correct m
 * Coming up with useful/meaningful analytics on workout data
 * Creating meaningful workout advice and routines that will improve the user’s strength based on his/her past data 
 
+# Deployment
 
+## Mobile App
+To deploy mobile app, `cd LiftLogs` and use the command `expo start`. A browser window should open up.
+
+From there ensure you have the Expo App downloaded on your mobile phone.
+
+On the browser window thats opened, either use the url provied on your mobile phone's web browser or scan the QR code to be redirected into the expo app where the LiftLogs app mobile is contained.
+
+## Backend Server
+
+### One time set-up
+1. Ensure you have the heroku CLI installed: https://devcenter.heroku.com/articles/heroku-cli
+2. Log into your heroku account with the command: `heroku login` (your account will need access to the heroku lift-logs app)
+3. Run `heroku git:remote -a lift-logs`
+
+### Deploy/Re-deploy command
+In the root project directory run `$ git subtree push --prefix Server heroku master`
+To see live errors in the deployment, or console.log output, run `heroku logs --tail`

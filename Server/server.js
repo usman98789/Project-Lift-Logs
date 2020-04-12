@@ -308,7 +308,7 @@ app.get('/users/log/', isAuthenticated, function (req, res, next) {
     MongoClient.connect(url, function (err, db) {
         if (err) return res.status(500).end(err);
         var dbo = db.db("mydb");
-        dbo.collection("log").find({ user: req.session.user }, null, { sort: { timestamp: -1 } }).toArray(function (err, result) {
+        dbo.collection("log").find({ user: req.session.user }, null). sort( { timestamp: -1 } ).toArray(function (err, result) {
             if (err) throw err;
             res.json(result);
             db.close();

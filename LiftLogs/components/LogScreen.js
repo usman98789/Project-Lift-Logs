@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
+import backendUrl from '../config';
 
 const LogEntry = props => {
 	const [viewDetails, setViewDetails] = useState(false);
@@ -98,7 +99,7 @@ const LogScreen = props => {
 	let localIPAddress = "";
 
 	let getWorkouts = () => {
-		fetch(`http://${localIPAddress}:3000/users/log`, {
+		fetch(`${backendUrl}/users/log`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",

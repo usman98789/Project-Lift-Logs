@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Picker, Dimensions, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { LineChart } from "react-native-chart-kit";
+import backendUrl from "../../config";
 
 const UserCharts = props => {
   const [userExercises, setUserExercises] = useState(null);
@@ -12,8 +13,7 @@ const UserCharts = props => {
 
   const getExercises = async () => {
     // for using your physical phone, add your ip address
-    let localIPAddress = "";
-    await fetch(`http://${localIPAddress}:3000/users/log`, {
+    await fetch(`${backendUrl}/users/log`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -43,7 +43,7 @@ const UserCharts = props => {
   const getExerciseWeightData = () => {
     let name = selectedEx;
     let localIPAddress = "";
-    fetch(`http://${localIPAddress}:3000/users/log`, {
+    fetch(`${backendUrl}/users/log`, {
       method: "GET",
       headers: {
         Accept: "application/json",

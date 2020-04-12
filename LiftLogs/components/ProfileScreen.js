@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import { Dropdown } from 'react-native-material-dropdown';
-
+import backendUrl from '../config';
 import UserCharts from "./Charts/UserCharts.js";
 
 const ProfileScreen = props => {
@@ -37,11 +37,9 @@ const ProfileScreen = props => {
 		return newText;
 	};
 
-	// for using your physical phone, add your ip address
-	let localIPAddress = "";
 
 	let signup = (username, password) => {
-		fetch(`http://${localIPAddress}:3000/signup/`, {
+		fetch(`${backendUrl}/signup/`, {
 			method: "POST",
 			body: JSON.stringify({ username: username, password: password }),
 			headers: {
@@ -59,7 +57,7 @@ const ProfileScreen = props => {
 	};
 
 	let signout = () => {
-		fetch(`http://${localIPAddress}:3000/signout/`, {
+		fetch(`${backendUrl}/signout/`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",
@@ -75,7 +73,7 @@ const ProfileScreen = props => {
 	};
 
 	let signin = (username, password) => {
-		fetch(`http://${localIPAddress}:3000/signin/`, {
+		fetch(`${backendUrl}/signin/`, {
 			method: "POST",
 			body: JSON.stringify({ username: username, password: password }),
 			headers: {
@@ -84,8 +82,15 @@ const ProfileScreen = props => {
 			},
 			credentials: "include"
 		})
-			.then(resJson => resJson.json())
 			.then(res => {
+				if (!res.ok) {
+					let status = res.status;
+					throw Error(`Error, status code: ${status}`);
+				}
+				res.json();
+			})
+			.then(resJson => {
+				console.log('signin res', resJson);
 				setshowButtons(false);
 				setSignOut(true);
 			})

@@ -13,6 +13,7 @@ import { Button, Overlay } from "react-native-elements";
 import WorkoutScreen from "./WorkoutScreen";
 import { FlatList } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
+import backendUrl from "../../config";
 
 const Routine = props => {
 	const [WorkoutOpen, setWorkoutOpen] = useState(false);
@@ -23,10 +24,9 @@ const Routine = props => {
 	const setWorkoutNamer = x => {
 		setworkoutName(x);
 	};
-	let localIPAddress = "";
-	//CHANGE URLS
+
 	function sendNewWorkout() {
-		fetch(`http://${localIPAddress}:3000/users/workouts/${props._id}`, {
+		fetch(`${backendUrl}/users/routines/${props._id}/workouts`, {
 			method: "POST",
 			body: JSON.stringify({
 				workout_name: workoutName
@@ -47,7 +47,7 @@ const Routine = props => {
 	}
 
 	function getWorkouts() {
-		fetch(`http://${localIPAddress}:3000/users/workouts/${props._id}`, {
+		fetch(`${backendUrl}/users/routines/${props._id}/workouts`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",

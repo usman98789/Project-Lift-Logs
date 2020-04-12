@@ -16,6 +16,7 @@ import { FlatList } from "react-native-gesture-handler";
 import ExerciseScreen from "./ExerciseScreen";
 import AddExcercise from "../AddExcercise";
 import { set } from "gl-matrix/src/gl-matrix/mat4";
+import backendUrl from '../../config';
 
 const WorkoutScreen = props => {
 	const [ExerciseOpen, setExerciseOpen] = useState(false);
@@ -82,7 +83,7 @@ const WorkoutScreen = props => {
 	};
 
 	function sendNewExercise() {
-		fetch(`http://${localIPAddress}:3000/users/exercises/${props._id}`, {
+		fetch(`${backendUrl}/users/routines/workouts/${props._id}/exercises`, {
 			method: "POST",
 			body: JSON.stringify({
 				exercise_name: exercise_name,
@@ -106,8 +107,7 @@ const WorkoutScreen = props => {
 	}
 
 	function getExercises() {
-		fetch(
-			`http://${localIPAddress}:3000/users/workouts/${props.routine_id}/${props._id}`,
+		fetch(`${backendUrl}/users/routines/${props.routine_id}/workouts/${props._id}`,
 			{
 				method: "GET",
 				headers: {
@@ -129,7 +129,7 @@ const WorkoutScreen = props => {
 	}, [ExerciseOpen]);
 
 	function sendLogReqTempWorkout() {
-		fetch(`http://${localIPAddress}:3000/users/log`, {
+		fetch(`${backendUrl}/users/log`, {
 			method: "PATCH",
 			body: JSON.stringify({
 				workout_name: props.workout_name,

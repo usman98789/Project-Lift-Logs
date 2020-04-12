@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import AddExcercise from "./AddExcercise";
 import Routine from "./RoutineScreen_components/Routine";
 import { FlatList } from "react-native-gesture-handler";
+import backendUrl from "../config";
 
 const RoutineScreen = props => {
 	const [emptyOpen, setemptyOpen] = useState(false);
@@ -90,7 +91,7 @@ const RoutineScreen = props => {
 		setexArray([]);
 		setWorkoutName("");
 
-		fetch(`http://${localIPAddress}:3000/users/log`, {
+		fetch(`${backendUrl}/users/log`, {
 			method: "PATCH",
 			body: JSON.stringify({
 				workout_name: tempWorkoutName,
@@ -108,7 +109,7 @@ const RoutineScreen = props => {
 	}
 
 	function sendNewRoutine() {
-		fetch(`http://${localIPAddress}:3000/users/routines/`, {
+		fetch(`${backendUrl}/users/routines/`, {
 			method: "POST",
 			body: JSON.stringify({
 				routine_name: routineName
@@ -128,7 +129,7 @@ const RoutineScreen = props => {
 	}
 
 	function getRoutines() {
-		fetch(`http://${localIPAddress}:3000/users/routines/`, {
+		fetch(`${backendUrl}/users/routines/`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",

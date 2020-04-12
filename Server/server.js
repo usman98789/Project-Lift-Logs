@@ -101,7 +101,9 @@ const cookie = require('cookie');
  Exercises: {
      id: something
      name: something
-     sets: [{set:1, rep: 10, weight: 100lb}, {set:2, rep: 11: weight: 120lb}] <= a list of sets related object
+     sets: soemthing
+     reps: something
+     weights: something
  }
 }
 not working on date yet, we can leave it for later like when a routine is created
@@ -128,21 +130,14 @@ let Workout = (function () {
 
 // create an exercise
 let Exercise = (function () {
-    return function new_exercise(id, exercise_name, sets) {
+    return function new_exercise(id, exercise_name, sets, reps, weights) {
         this._id = id;
         this.exercise_name = exercise_name;
         this.sets = sets;
+        this.reps = reps;
+        this.weights = weights;
     }
 }());
-
-let Sets = (function () {
-    return function new_sets(set, reps, weight) {
-        this.set = set;
-        this.reqs = reps;
-        this.weight = weight;
-    }
-}());
-
 
 
 app.use(function (req, res, next) {
@@ -258,7 +253,7 @@ app.post('/users/routines/workouts/:id/exercises/', isAuthenticated, function (r
         var dbo = db.db("mydb");
         dbo.collection("workouts").updateOne(
             { _id: ObjectID(req.params.id) },
-            { $push: { exercises: new Exercise(ObjectID().toString(), req.body.exercise_name, req.body.sets) } }, function (err, updElem) {
+            { $push: { exercises: new Exercise(ObjectID().toString(), req.body.exercise_name, req.body.sets, req.body.reps, req.body.weights) } }, function (err, updElem) {
                 if (err) return res.status(500).end(err);
                 db.close();
                 return res.json("new exercise pushed\n");

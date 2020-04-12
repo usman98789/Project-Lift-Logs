@@ -1,29 +1,37 @@
 {
-  "expo": {
-    "name": "Lift logs",
-    "slug": "LiftLogs",
-    "privacy": "public",
-    "sdkVersion": "36.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    }
-  }
+	"expo": {
+		"name": "Lift logs",
+		"slug": "LiftLogs",
+		"privacy": "public",
+		"sdkVersion": "36.0.0",
+		"platforms": [
+			"ios",
+			"android"
+		],
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"packagerOpts": {
+			"config": "metro.config.js"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": [
+			"**/*"
+		],
+		"ios": {
+			"bundleIdentifier": "com.liftlog.liftlogs",
+			"buildNumber": "1.0.0"
+		},
+		"android": {
+			"package": "com.liftlog.liftlogs",
+			"versionCode": 1
+		}
+	}
 }

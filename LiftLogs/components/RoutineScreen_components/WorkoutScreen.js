@@ -16,7 +16,7 @@ import { FlatList } from "react-native-gesture-handler";
 import ExerciseScreen from "./ExerciseScreen";
 import AddExcercise from "../AddExcercise";
 import { set } from "gl-matrix/src/gl-matrix/mat4";
-import backendUrl from '../../config';
+import backendUrl from "../../config";
 
 const WorkoutScreen = props => {
 	const [ExerciseOpen, setExerciseOpen] = useState(false);
@@ -107,7 +107,8 @@ const WorkoutScreen = props => {
 	}
 
 	function getExercises() {
-		fetch(`${backendUrl}/users/routines/${props.routine_id}/workouts/${props._id}`,
+		fetch(
+			`${backendUrl}/users/routines/${props.routine_id}/workouts/${props._id}`,
 			{
 				method: "GET",
 				headers: {
@@ -178,11 +179,11 @@ const WorkoutScreen = props => {
 							<Icon name="ios-add" size={40} style={styles.icon} />
 						</TouchableOpacity>
 					</View>
-					<Overlay isVisible={boolModal} width="80%" height="30%">
+					<Overlay isVisible={boolModal} width="80%" height="39%">
 						<View>
 							<TextInput
 								style={{ padding: 15, color: "black", fontSize: 18 }}
-								placeholder="Excercise Name"
+								placeholder="Exercise Name"
 								placeholderTextColor="#A0A0A0"
 								onChangeText={text => setExcerciseNamer(text)}
 							/>
@@ -219,11 +220,11 @@ const WorkoutScreen = props => {
 							</View>
 						</View>
 					</Overlay>
-					<View style={{ height: "75%" }}>
+					<View style={{ height: "72%" }}>
 						<FlatList
 							data={Exercises}
 							renderItem={({ item }) => {
-								console.log('check inside overlay flatlist before add', item)
+								console.log("check inside overlay flatlist before add", item);
 								return (
 									<ExerciseScreen
 										_id={item._id}
@@ -305,7 +306,7 @@ const WorkoutScreen = props => {
 						</Text>
 					</View>
 					<KeyboardAvoidingView behavior="padding">
-						<View style={{ height: "80%", paddingTop: 10 }}>
+						<View style={{ height: "78%", paddingTop: 10 }}>
 							<FlatList
 								data={Exercises}
 								renderItem={(item, index) => {

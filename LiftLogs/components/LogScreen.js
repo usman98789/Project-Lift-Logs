@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
-import backendUrl from '../config';
+import backendUrl from "../config";
 
 const LogEntry = props => {
 	const [viewDetails, setViewDetails] = useState(false);
@@ -38,7 +38,7 @@ const LogEntry = props => {
 					</Text>
 				</View>
 			</TouchableOpacity>
-			<Overlay isVisible={viewDetails} width="85%" height="35%">
+			<Overlay isVisible={viewDetails} width="85%" height="25%">
 				<ScrollView>
 					<View
 						style={{

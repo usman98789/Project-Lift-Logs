@@ -97,7 +97,7 @@ const Routine = props => {
 							<Icon name="ios-add" size={40} style={styles.icon} />
 						</TouchableOpacity>
 					</View>
-					<Overlay isVisible={boolModal} width="80%" height="15%">
+					<Overlay isVisible={boolModal} width="80%" height="18%">
 						<View>
 							<TextInput
 								style={{ padding: 15, color: "black", fontSize: 21 }}
@@ -115,7 +115,7 @@ const Routine = props => {
 							/>
 						</View>
 					</Overlay>
-					<View style={{ height: "85%", paddingTop: 10 }}>
+					<View style={{ height: "78%", paddingTop: 10 }}>
 						<FlatList
 							data={workouts}
 							renderItem={({ item }) => (

@@ -10,8 +10,8 @@ import {
 	ScrollView
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
-import { Dropdown } from 'react-native-material-dropdown';
-import backendUrl from '../config';
+import { Dropdown } from "react-native-material-dropdown";
+import backendUrl from "../config";
 import UserCharts from "./Charts/UserCharts.js";
 
 const ProfileScreen = props => {
@@ -36,7 +36,6 @@ const ProfileScreen = props => {
 		}
 		return newText;
 	};
-
 
 	let signup = (username, password) => {
 		fetch(`${backendUrl}/signup/`, {
@@ -90,7 +89,7 @@ const ProfileScreen = props => {
 				res.json();
 			})
 			.then(resJson => {
-				console.log('signin res', resJson);
+				console.log("signin res", resJson);
 				setshowButtons(false);
 				setSignOut(true);
 			})
@@ -111,7 +110,7 @@ const ProfileScreen = props => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={{ flex: 1 }}>
-				<ScrollView style={{ height: '100%' }}>
+				<ScrollView style={{ height: "100%" }}>
 					<View style={styles.header}>
 						<Text style={styles.headerTitle}>My Profile</Text>
 						{signOut && (
@@ -127,11 +126,7 @@ const ProfileScreen = props => {
 							</View>
 						)}
 					</View>
-					{signOut && (
-						<UserCharts
-							navigation={navigation}
-						/>
-					)}
+					{signOut && <UserCharts navigation={navigation} />}
 
 					{showButtons && (
 						<View>
@@ -160,7 +155,7 @@ const ProfileScreen = props => {
 						</View>
 					)}
 
-					<Overlay isVisible={showOverlay} width="70%" height="35%">
+					<Overlay isVisible={showOverlay} width="70%" height="40%">
 						<View style={{ flex: 1, alignItems: "center", paddingTop: 25 }}>
 							<Text
 								style={{
@@ -170,7 +165,7 @@ const ProfileScreen = props => {
 								}}
 							>
 								Lift Logs
-					</Text>
+							</Text>
 							<KeyboardAvoidingView
 								style={{
 									borderBottomWidth: 1,
@@ -250,7 +245,7 @@ const ProfileScreen = props => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		height: '100%'
+		height: "100%"
 	},
 	header: {
 		flex: 1,
@@ -259,8 +254,8 @@ const styles = StyleSheet.create({
 		position: "relative",
 		borderBottomColor: "#F0EFF5",
 		borderBottomWidth: 2,
-		flexDirection: 'row',
-		justifyContent: 'space-between'
+		flexDirection: "row",
+		justifyContent: "space-between"
 	},
 	headerTitle: {
 		color: "black",

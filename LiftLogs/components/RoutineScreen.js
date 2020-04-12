@@ -247,7 +247,7 @@ const RoutineScreen = props => {
 						<Icon name="ios-add" size={40} style={styles.icon} />
 					</TouchableOpacity>
 				</View>
-				<Overlay isVisible={boolModal} width="80%" height="15%">
+				<Overlay isVisible={boolModal} width="80%" height="18%">
 					<View>
 						<TextInput
 							style={{ padding: 15, color: "black", fontSize: 21 }}

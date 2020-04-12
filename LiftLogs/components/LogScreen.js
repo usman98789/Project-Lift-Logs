@@ -95,7 +95,7 @@ const LogScreen = props => {
 
 	const { navigation } = props;
 
-	let localIPAddress = "";
+	let localIPAddress = "192.168.0.163";
 
 	let getWorkouts = () => {
 		fetch(`http://${localIPAddress}:3000/users/log`, {
@@ -108,7 +108,6 @@ const LogScreen = props => {
 		})
 			.then(resJson => resJson.json())
 			.then(res => {
-				console.log({ "res": res == null });
 				setWorkoutArray(res);
 			})
 			.catch(error => {

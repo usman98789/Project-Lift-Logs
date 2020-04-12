@@ -18,7 +18,7 @@ Lift Logs is a mobile application that makes your gym life more organized and ma
 
 __Routine tracker__ - including daily, weekly and long term plans. This feature tracks user’s performance and displays their routines, workouts and logs every workout they do.
 
-__Charts__ - A leaderboard that displays workout performance from different people where users can know which stage they are currently at and use others as motivation.
+__Charts__ - A graph that displays workout performance for that exercise plotting your growth of how well you have been performing in the gym.
 
 __Recommendation__ - This feature recommends users which workout routine works best for them based on their profile information of 3 main exercises Bench Press, Squats and Deadlift. It looks at their current progress and suggests which exercises they should do more.
 

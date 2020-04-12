@@ -122,7 +122,6 @@ const ProfileScreen = props => {
 		})
 			.then(resJson => resJson.json())
 			.then(res => {
-				console.log(res)
 				setRecommendation(res);
 				setRecommendationpop(true);
 			})
@@ -283,9 +282,6 @@ const ProfileScreen = props => {
 							<SafeAreaView>
 								<View>
 									<Text style={{
-									flex: 1,
-									flexDirection: "row",
-									justifyContent: "center",
 									fontSize: 30
 								}}>Basd on our Machine Learning algorithm, your recommended workout is {Recommendation}</Text>
 									<View  style={styles.button}>

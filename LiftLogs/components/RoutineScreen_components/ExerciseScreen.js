@@ -1,47 +1,36 @@
 import React, { useState, useEffect } from "react";
-import {
-	View,
-	StyleSheet,
-	Text,
-	SafeAreaView,
-	TouchableOpacity
-} from "react-native";
-
+import { View, StyleSheet, Text, SafeAreaView } from "react-native";
 
 const ExerciseScreen = props => {
-
-
 	return (
-        <SafeAreaView style={styles.container}>
-            <View>
-                <TouchableOpacity activeOpacity={0.5} style={{ zIndex: 1 }}>
-                    <View style={styles.exercise}>
-                        <Text style={{ fontSize: 19 }}>{props.exercise_name}</Text>
-                        <Text style={{ fontSize: 14 }}>{props.reps} </Text>
-                        <Text style={{ fontSize: 14 }}>{props.sets} </Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
-    );
-    
+		<SafeAreaView>
+			<View style={styles.workout}>
+				<Text style={{ fontSize: 21 }}>{props.exercise_name}</Text>
+				<View
+					style={{
+						flexDirection: "row",
+						paddingTop: 10,
+						justifyContent: "space-between"
+					}}
+				>
+					<Text style={{ fontSize: 16 }}>Sets : {props.sets} </Text>
+					<Text style={{ fontSize: 16 }}>Weights: {props.weights} </Text>
+					<Text style={{ fontSize: 16 }}>Reps: {props.reps} </Text>
+				</View>
+			</View>
+		</SafeAreaView>
+	);
 };
 
 const styles = StyleSheet.create({
-	headerTitle: {
-		color: "black",
-		fontSize: 28,
-		fontWeight: "bold"
-	},
-	exercise: {
+	workout: {
 		marginTop: 15,
 		right: -20,
-		flexDirection: "row",
 		width: "90%",
-		height: 100,
+		height: 85,
 		borderRadius: 5,
 		padding: 15,
-		backgroundColor: "white"
+		backgroundColor: "#F5F5F5"
 	}
 });
 

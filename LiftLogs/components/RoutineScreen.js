@@ -10,7 +10,7 @@ import {
 	TextInput,
 	KeyboardAvoidingView
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Overlay } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
 import AddExcercise from "./AddExcercise";
 import Routine from "./RoutineScreen_components/Routine";
@@ -21,64 +21,72 @@ const RoutineScreen = props => {
 	const [date, setDate] = useState(new Date());
 	const [exArray, setexArray] = useState([]);
 	const [workoutName, setWorkoutName] = useState("");
-	// const [setsArray, setsetsArray] = useState([]);
 	const [weight, setWeight] = useState("");
 	const [reps, setReps] = useState("");
 	const [setCount, setSetsCount] = useState(0);
-	const [exName, setexName] = useState("");
+	const [exercise_name, setexName] = useState("");
 	const [routines, setRoutine] = useState([]);
+	const [boolModal, setboolModal] = useState(false);
+	const [routineName, setRoutineName] = useState("");
 
-	useEffect(() => {
-		setRoutine([{_id: "1", routine_name: "big man on campus", user: "jack"},
-					{_id: "2", routine_name: "big man on campus 2", user: "jack"}]);
-	  },[]);
-
-	
+	const setRoutineNamer = x => {
+		setRoutineName(x);
+	};
 
 	// for using your physical phone, add your ip address
 	let localIPAddress = "";
 
 	const addEX = () => {
-		setexArray(exArray => [...exArray, { weight, reps, setCount, exName }]);
+		setexArray(exArray => [
+			...exArray,
+			{ weight, reps, sets: setCount, exercise_name: exercise_name }
+		]);
 	};
 
-	const setExNamer = x => {
-		setexName(x);
+	const setExNamer = (x, i) => {
+		let copyexArray = exArray;
+		copyexArray[i] = { ...copyexArray[i], exercise_name: x };
+		setexArray(copyexArray);
 	};
 
 	const setWorkoutNamer = x => {
 		setWorkoutName(x);
 	};
 
-	const setWeights = y => {
-		setWeight(y);
+	const setWeights = (x, i) => {
+		let copyexArray = exArray;
+		copyexArray[i] = { ...copyexArray[i], weight: x };
+		setexArray(copyexArray);
 	};
 
-	const setREPS = y => {
-		setReps(y);
+	const setREPS = (x, i) => {
+		let copyexArray = exArray;
+		copyexArray[i] = { ...copyexArray[i], reps: x };
+		setexArray(copyexArray);
 	};
 
-	const setCounter = y => {
-		setSetsCount(y);
+	const setCounter = (x, i) => {
+		let copyexArray = exArray;
+		copyexArray[i] = { ...copyexArray[i], sets: x };
+		setexArray(copyexArray);
 	};
 
+	const addRoutineArray = i => {
+		if (routineName.length > 0) {
+			setRoutine(routineArray => [
+				...routineArray,
+				{ _id: i, routine_name: routineName }
+			]);
+			setRoutineName("");
+		}
+	};
 	function sendLogReqTempWorkout(workoutName, exArray) {
-		// check for no workout name entered
 		if (workoutName === "") {
 			tempWorkoutName = date.toDateString() + "'s Workout";
 		} else {
 			tempWorkoutName = workoutName;
 		}
 
-		let temparray = exArray;
-
-		// remove empty object
-		temparray.shift();
-
-		// append the last object to excercise array
-		temparray = [...temparray, { weight, reps, setCount, exName }];
-
-		// clear exArray for future use
 		setexArray([]);
 		setWorkoutName("");
 
@@ -86,7 +94,7 @@ const RoutineScreen = props => {
 			method: "PATCH",
 			body: JSON.stringify({
 				workout_name: tempWorkoutName,
-				exercises: temparray
+				exercises: exArray
 			}),
 			headers: {
 				Accept: "application/json",
@@ -99,12 +107,53 @@ const RoutineScreen = props => {
 			.catch(e => console.log(e));
 	}
 
+	function sendNewRoutine() {
+		fetch(`http://${localIPAddress}:3000/users/routines/`, {
+			method: "POST",
+			body: JSON.stringify({
+				routine_name: routineName
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include"
+		})
+			.then(resJson => resJson.json())
+			.then(res => {
+				let resobj = res.ops[0];
+				addRoutineArray(resobj._id);
+			})
+			.catch(e => console.log(e));
+	}
+
+	function getRoutines() {
+		fetch(`http://${localIPAddress}:3000/users/routines/`, {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include"
+		})
+			.then(resJson => resJson.json())
+			.then(res => setRoutine(res))
+			.catch(e => console.log(e));
+	}
+
 	useEffect(() => {
 		if (!emptyOpen) {
 			setexArray([]);
 			setWorkoutName("");
 		}
 	}, [emptyOpen]);
+
+	useEffect(() => {
+		getRoutines();
+		const unsubscribe = props.navigation.addListener("willFocus", e => {
+			getRoutines();
+		});
+	}, []);
 
 	let EXs = exArray.map((val, key) => {
 		return (
@@ -115,7 +164,7 @@ const RoutineScreen = props => {
 				weight={setWeights}
 				reps={setREPS}
 				setCount={setCounter}
-				exName={setExNamer}
+				exercise_name={setExNamer}
 			/>
 		);
 	});
@@ -189,15 +238,42 @@ const RoutineScreen = props => {
 			<View style={styles.routines}>
 				<View style={styles.routineHeader}>
 					<Text style={styles.routineTitle}>Routines & Plans</Text>
-					<TouchableOpacity activeOpacity={0.5} style={styles.TouchableOpacity}>
+					<TouchableOpacity
+						activeOpacity={0.5}
+						onPress={() => setboolModal(true)}
+						style={styles.TouchableOpacity}
+					>
 						<Icon name="ios-add" size={40} style={styles.icon} />
 					</TouchableOpacity>
 				</View>
-				<FlatList data = {routines} 
-						renderItem = {({item}) => <Routine  _id = {item._id} routine_name = {item.routine_name} user = {item.user} />}
-						keyExtractor={(item) => item._id}
-						extraData = {routines}
+				<Overlay isVisible={boolModal} width="80%" height="15%">
+					<View>
+						<TextInput
+							style={{ padding: 15, color: "black", fontSize: 21 }}
+							placeholder="Routine Name"
+							placeholderTextColor="#A0A0A0"
+							onChangeText={text => setRoutineNamer(text)}
 						/>
+						<Button
+							title="Done"
+							buttonStyle={{ backgroundColor: "#2dcc70" }}
+							onPress={() => {
+								setboolModal(false);
+								sendNewRoutine();
+							}}
+						/>
+					</View>
+				</Overlay>
+				<View style={{ height: "79%" }}>
+					<FlatList
+						data={routines}
+						renderItem={({ item }) => (
+							<Routine _id={item._id} routine_name={item.routine_name} />
+						)}
+						keyExtractor={item => item._id}
+						extraData={routines}
+					/>
+				</View>
 			</View>
 		</SafeAreaView>
 	);

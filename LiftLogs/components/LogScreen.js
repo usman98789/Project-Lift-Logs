@@ -13,7 +13,7 @@ const LogEntry = props => {
 	let concatExerciseNames = exercises => {
 		let exerciseNames = "";
 		exercises.map(exercise => {
-			exerciseNames = exerciseNames.concat(exercise.exName, ", ");
+			exerciseNames = exerciseNames.concat(exercise.exercise_name, ", ");
 		});
 		// remove last comma
 		exerciseNames = exerciseNames.slice(0, exerciseNames.length - 2);

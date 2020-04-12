@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, StyleSheet, Button } from "react-native";
 import AddSet from "./AddSet";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const AddExcercise = props => {
 	const setExname = x => {
@@ -12,7 +13,7 @@ const AddExcercise = props => {
 	};
 
 	const setWeights = w => {
-		props.weight(w, props.keyval);
+		props.weights(w, props.keyval);
 	};
 
 	const setRep = r => {
@@ -35,7 +36,7 @@ const AddExcercise = props => {
 			<View style={styles.addSet}>
 				<AddSet
 					count={setCounter}
-					weight={setWeights}
+					weights={setWeights}
 					rep={setRep}
 					val={props.val}
 				/>
@@ -55,7 +56,8 @@ const styles = StyleSheet.create({
 		height: 50,
 		fontSize: 19,
 		right: -30,
-		color: "black"
+		color: "black",
+		width: 370
 	},
 	addSet: {
 		borderColor: "#BFBFBF",

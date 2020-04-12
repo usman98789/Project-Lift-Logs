@@ -39,7 +39,7 @@ const RoutineScreen = props => {
 	const addEX = () => {
 		setexArray(exArray => [
 			...exArray,
-			{ weight, reps, sets: setCount, exercise_name: exercise_name }
+			{ weights: weight, reps, sets: setCount, exercise_name: exercise_name }
 		]);
 	};
 
@@ -55,7 +55,7 @@ const RoutineScreen = props => {
 
 	const setWeights = (x, i) => {
 		let copyexArray = exArray;
-		copyexArray[i] = { ...copyexArray[i], weight: x };
+		copyexArray[i] = { ...copyexArray[i], weights: x };
 		setexArray(copyexArray);
 	};
 
@@ -82,7 +82,7 @@ const RoutineScreen = props => {
 	};
 	function sendLogReqTempWorkout(workoutName, exArray) {
 		if (workoutName === "") {
-			tempWorkoutName = date.toDateString() + "'s Workout";
+			tempWorkoutName = date.toDateString();
 		} else {
 			tempWorkoutName = workoutName;
 		}
@@ -161,7 +161,7 @@ const RoutineScreen = props => {
 				key={key}
 				keyval={key}
 				val={val}
-				weight={setWeights}
+				weights={setWeights}
 				reps={setREPS}
 				setCount={setCounter}
 				exercise_name={setExNamer}
@@ -210,7 +210,7 @@ const RoutineScreen = props => {
 						<TextInput
 							selectionColor="blue"
 							style={styles.workoutTitle}
-							placeholder={date.toDateString() + "'s Workout"}
+							placeholder={date.toDateString()}
 							placeholderTextColor="grey"
 							maxLength={30}
 							multiline={false}

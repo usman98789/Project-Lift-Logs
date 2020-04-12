@@ -7,7 +7,7 @@ const AddSet = props => {
 	};
 
 	const setWeights = w => {
-		props.weight(w, props.keyval);
+		props.weights(w, props.keyval);
 	};
 
 	const setRep = r => {

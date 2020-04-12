@@ -225,6 +225,7 @@ const WorkoutScreen = props => {
 						<FlatList
 							data={Exercises}
 							renderItem={({ item }) => {
+								console.log('check inside overlay flatlist before add', item)
 								return (
 									<ExerciseScreen
 										_id={item._id}
@@ -315,7 +316,7 @@ const WorkoutScreen = props => {
 											key={item.item._id}
 											keyval={item.index}
 											val={item.item}
-											weight={setWeights}
+											weights={setWeights}
 											reps={setREPS}
 											setCount={setCounter}
 											exercise_name={setExNamer}

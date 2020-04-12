@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	TextInput,
 	KeyboardAvoidingView,
+	Modal,
 	ScrollView
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
@@ -21,6 +22,8 @@ const ProfileScreen = props => {
 	const [signinOrSignup, setSigninOrSignup] = useState(null);
 	const [showButtons, setshowButtons] = useState(true);
 	const [signOut, setSignOut] = useState(false);
+	const [Recommendationpop, setRecommendationpop] = useState(false);
+	const [Recommendation, setRecommendation] = useState("");
 
 	const { navigation } = props;
 
@@ -108,6 +111,25 @@ const ProfileScreen = props => {
 		}
 	};
 
+	function get_Recommendation(){
+		fetch(`${backendUrl}/users/recommendation/`, {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include"
+		})
+			.then(resJson => resJson.json())
+			.then(res => {
+				console.log(res)
+				setRecommendation(res);
+				setRecommendationpop(true);
+			})
+			.catch(e => console.log(e));
+	}
+	
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={{ flex: 1 }}>
@@ -130,6 +152,19 @@ const ProfileScreen = props => {
 					{signOut && (
 						<UserCharts
 							navigation={navigation}
+						/>
+
+
+						
+					)}
+					{signOut && (
+						<Button 
+							titleStyle={{ fontWeight: "bold" }}
+							buttonStyle={{ backgroundColor: "#24a0ed" }}
+							onPress={() => {
+								get_Recommendation();
+							}}
+							title="Get Recommendation"
 						/>
 					)}
 
@@ -242,6 +277,21 @@ const ProfileScreen = props => {
 						</View>
 					</Overlay>
 				</ScrollView>
+				<Modal visible={Recommendationpop} animationType="slide">
+							<SafeAreaView>
+								<View >
+									<Text>{Recommendation}</Text>
+									<Button 
+										titleStyle={{ fontWeight: "bold" }}
+										buttonStyle={{ backgroundColor: "#24a0ed" }}
+											onPress={() => {
+												setRecommendationpop(false)
+											}}
+											title="back"
+									/>
+								</View>
+							</SafeAreaView>
+						</Modal>
 			</View>
 		</SafeAreaView>
 	);

@@ -118,8 +118,10 @@ export default class Ar extends React.Component {
 	onResize = ({ width, height }) => {
 		const scale = PixelRatio.get();
 
-		this.camera.aspect = width / height;
-		this.camera.updateProjectionMatrix();
+		if (this.camera) {
+			this.camera.aspect = width / height;
+			this.camera.updateProjectionMatrix();
+		}
 		this.renderer.setPixelRatio(scale);
 		this.renderer.setSize(width, height);
 	};

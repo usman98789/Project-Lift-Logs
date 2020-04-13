@@ -67,3 +67,9 @@ Here is the link to API Documentation: https://github.com/UTSCC09/project-lift-l
 
 ## Youtube Link
 https://www.youtube.com/watch?v=QBwLzrR_9cs
+
+## Credits
+Credits to CG_Luke for the walking animation https://www.turbosquid.com/FullPreview/Index.cfm/ID/1049650.
+Credits to Neromaru for the stretching animation https://www.turbosquid.com/FullPreview/Index.cfm/ID/1087579.
+
+Also thanks to Evan Bacon for the boilerplate code for the Expo AR https://expo.io/snacks/@bacon.

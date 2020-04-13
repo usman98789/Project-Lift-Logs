@@ -64,3 +64,6 @@ To see live errors in the deployment, or console.log output, run `heroku logs --
 
 ### API Documentation
 Here is the link to API Documentation: https://github.com/UTSCC09/project-lift-logs/blob/master/API_Doc.md
+
+## Youtube Link
+https://www.youtube.com/watch?v=QBwLzrR_9cs

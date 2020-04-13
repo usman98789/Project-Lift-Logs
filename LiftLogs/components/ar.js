@@ -10,7 +10,6 @@ import {
 import React from "react";
 import { PixelRatio, Dimensions } from "react-native";
 
-// much of this code adapted from Evan Bacon https://snack.expo.io/@bacon/load-simple-obj-model
 export default class Ar extends React.Component {
 	constructor(props) {
 		super(props);
@@ -131,13 +130,12 @@ export default class Ar extends React.Component {
 		this.action = this.mixer.clipAction(obj.animations[i]);
 		this.action.play();
 
+		if (this.props.chosen === "Walk") obj.rotation.x += 11;
 		// /// Update size and position
 		ExpoTHREE.utils.scaleLongestSideToSize(obj, 0.25);
-		// ExpoTHREE.utils.alignMesh(obj, { x: 1, y: 1 });
+		obj.scale.multiplyScalar(1.5);
 
-		// set position of obj so its not huge
-		// obj.position.set(10, 0, 0);
-		obj.matrixWorld.setPosition(new THREE.Vector3(1000, 0, 0));
+		obj.matrixWorld.setPosition(new THREE.Vector3(1000, 0, -3000));
 
 		// /// Smooth mesh
 		// // ExpoTHREE.utils.computeMeshNormals(mesh);

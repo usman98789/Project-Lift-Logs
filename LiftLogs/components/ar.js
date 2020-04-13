@@ -134,8 +134,8 @@ export default class Ar extends React.Component {
 		// /// Update size and position
 		ExpoTHREE.utils.scaleLongestSideToSize(obj, 0.25);
 		obj.scale.multiplyScalar(1.5);
-
-		obj.matrixWorld.setPosition(new THREE.Vector3(1000, 0, -3000));
+		0
+		obj.matrixWorld.setPosition(new THREE.Vector3(1000, 0, 0));
 
 		// /// Smooth mesh
 		// // ExpoTHREE.utils.computeMeshNormals(mesh);

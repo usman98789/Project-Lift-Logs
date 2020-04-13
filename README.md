@@ -12,15 +12,15 @@
 ### Jikai Long, Usman Siddiqui, Rahmatullah Nikyar
 
 ## Description: <a name="desc"></a>
-Lift Logs is a web application that makes your gym life more organized and manageable. It provides services such as a workout tracker where it allows users to track and change their workout routine. It also includes leaderboards to be able to see other user’s workout progress and add a sense of competitiveness with your peers. In addition to that, Lift Logs can recommend different types of exercises based on user’s profile information while also providing guidelines for the workout using AR technologies. 
+Lift Logs is a mobile application that makes your gym life more organized and manageable. It provides services such as a workout tracker where it allows users to track and change their workout routine. It lets users create and store routines, workouts, and start a workout for today. It also includes charts to be able to see your growth in any of your exercises. In addition to that, Lift Logs can recommend different types of exercises based on user’s profile information while also providing guidelines for the workout using AR technologies. 
 
 ## Key features: <a name="key-feat"></a>
 
-__Routine tracker__ - including daily, weekly and long term plans. This feature tracks user’s performance and displays meaningful analytics on corresponding charts.
+__Routine tracker__ - including daily, weekly and long term plans. This feature tracks user’s performance and displays their routines, workouts and logs every workout they do.
 
-__Leaderboard__ - A leaderboard that displays workout performance from different people where users can know which stage they are currently at and use others as motivation.
+__Charts__ - A graph that displays workout performance for that exercise plotting your growth of how well you have been performing in the gym.
 
-__Recommendation__ - This feature recommends users which workout routine works best for them based on their profile information(beginner, expert, weight, height, body-fat percentage, etc) and their current progress(if the user is able to do 100 pounds smith machine bench press, they should move to 50 pounds regular bench press for better result) 
+__Recommendation__ - This feature recommends users which workout routine works best for them based on their profile information of 3 main exercises Bench Press, Squats and Deadlift. It looks at their current progress and suggests which exercises they should do more.
 
 ## Additional features: <a name="add-feat"></a>
 __AR__ - This AR features will project figures on machines and display correct motion of movement for corresponding exercises to help users learn and correct their forms.
@@ -39,4 +39,28 @@ __AR__ - This AR features will project figures on machines and display correct m
 * Coming up with useful/meaningful analytics on workout data
 * Creating meaningful workout advice and routines that will improve the user’s strength based on his/her past data 
 
+# Deployment
 
+## Mobile App
+The Augmented Reality is only supported for iOS and so we recommend using an iOS device as the app is optimized for it.
+
+To deploy mobile app, `cd LiftLogs` and use the command `expo start`. A browser window should open up.
+
+From there ensure you have the Expo App downloaded on your mobile phone.
+
+On the browser window thats opened, either use the url provied on your mobile phone's web browser or scan the QR code to be redirected into the expo app where the LiftLogs app mobile is contained.
+
+(According to Piazza post this was sufficient as it costs $99USD to either put on the Store or use Apples Test Flight)
+## Backend Server
+
+### One time set-up
+1. Ensure you have the heroku CLI installed: https://devcenter.heroku.com/articles/heroku-cli
+2. Log into your heroku account with the command: `heroku login` (your account will need access to the heroku lift-logs app)
+3. Run `heroku git:remote -a lift-logs`
+
+### Deploy/Re-deploy command
+In the root project directory run `$ git subtree push --prefix Server heroku master`
+To see live errors in the deployment, or console.log output, run `heroku logs --tail`
+
+### API Documentation
+Here is the link to API Documentation: https://github.com/UTSCC09/project-lift-logs/blob/master/API_Doc.md

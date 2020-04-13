@@ -59,7 +59,7 @@ params:id, body: {routine_name}
 curl -i -H "Content-Type: application/json" -d '{"routine_name": "big man on campus second version"}' -X PATCH http://localhost:3000/users/routine/5e698da6959eba1a3001433e/  -b cookie.txt
 
 PATCH: /users/workout/:id --modify the name and workout exercises
-params:id, body: {routine_name, exercises(array of exercises)}
+params:id, body: {workout_name, exercises(array of exercises)}
 curl -i -H "Content-Type: application/json" -d '{"workout_name": "heavy squat", "exercises":  [ { "_id" : "5e698f31959eba1a30014341", "exercise_name" : "squats", "sets" : 10, "reps" : 15, "weights" : "1000lb" } ]}' -X PATCH http://localhost:3000/users/workout/5e698ed4959eba1a30014340/  -b cookie.txt
 
 PATCH: /users/log/ -- add a workout to the log

@@ -1,0 +1,7 @@
+bench_rep,bench_sets,bench_weight,squat_rep,squat_set,squat_weight,deadlift_rep,deadlift_set,deadlift_weight,target
+10,1,100,10,5,300,2,2,200,0
+10,10,25,10,2,100,3,3,400,0
+20,5,50,5,2,100,3,3,200,1
+5,5,150,4,4,100,4,4,250,1
+5,5,200,5,4,300,20,1,150,2
+7,6,210,5,6,280,5,1,200,2
